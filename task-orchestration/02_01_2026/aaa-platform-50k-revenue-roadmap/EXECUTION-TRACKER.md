@@ -143,13 +143,18 @@ None currently
   - Completed in 5.5 hours (14 hours estimated - 61% under budget)
 
 **In Progress**:
-- None currently
+- 🔄 TASK-007: Enhance Blueprint Service
+  - Status: Just started
+  - Integrating v2 prompts with feature gating
+  - Adding input validation (Pydantic models)
+  - Implementing CRUD API endpoints
+  - Adding export formats (PDF, JSON)
+  - Building tests and documentation
 
 **Blockers**:
 - None
 
 **Next Planned**:
-- TASK-007: Enhance Blueprint Service (integrate v2 prompts + feature gating)
 - TASK-002: Multi-Tenant Architecture (Week 3-4)
 
 ---
