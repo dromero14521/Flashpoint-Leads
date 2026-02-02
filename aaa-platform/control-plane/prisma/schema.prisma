@@ -191,3 +191,21 @@ model SubscriptionHistory {
 
   createdAt DateTime @default(now())
 }
+
+model UsageEvent {
+  id       String @id @default(cuid())
+  userId   String
+  tenantId String
+
+  // Usage tracking
+  action String // blueprint, export_pdf, integration_deploy, api_call
+  month  String // YYYY-MM format for monthly limits
+
+  // Context
+  metadata String? // JSON string for additional context
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, action, month])
+  @@index([tenantId, action, month])
+}
