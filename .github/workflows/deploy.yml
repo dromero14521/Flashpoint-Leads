@@ -1,0 +1,151 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual trigger
+
+env:
+  NODE_VERSION: '20'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # Test Control Plane
+  test-control-plane:
+    name: Test Control Plane
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: aaa-platform/control-plane/package-lock.json
+
+      - name: Install dependencies
+        working-directory: aaa-platform/control-plane
+        run: npm ci
+
+      - name: Generate Prisma Client
+        working-directory: aaa-platform/control-plane
+        run: npx prisma generate
+
+      - name: Run linting
+        working-directory: aaa-platform/control-plane
+        run: npm run lint
+
+      - name: Build application
+        working-directory: aaa-platform/control-plane
+        run: npm run build
+        env:
+          SKIP_ENV_VALIDATION: true
+
+  # Test GenAI Core
+  test-genai-core:
+    name: Test GenAI Core
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+          cache-dependency-path: aaa-platform/genai-core/requirements.txt
+
+      - name: Install dependencies
+        working-directory: aaa-platform/genai-core
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        working-directory: aaa-platform/genai-core
+        run: pytest tests/ -v --tb=short
+        env:
+          USE_MOCK_LLM: 'true'
+
+  # Deploy to Railway
+  deploy-railway:
+    name: Deploy to Railway
+    needs: [test-control-plane, test-genai-core]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy to Railway
+        run: railway up --service control-plane,genai-core
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+      - name: Run smoke tests
+        run: |
+          sleep 30  # Wait for deployment
+          curl -f https://${{ secrets.RAILWAY_DOMAIN }}/api/health || exit 1
+
+  # Alternative: Deploy to VPS via Docker
+  deploy-vps:
+    name: Deploy to VPS (Docker)
+    needs: [test-control-plane, test-genai-core]
+    runs-on: ubuntu-latest
+    if: false  # Disabled by default - enable if using VPS
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to VPS
+        run: |
+          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} "
+            cd /app/apex-automation &&
+            git pull origin main &&
+            docker-compose pull &&
+            docker-compose up -d --build &&
+            docker-compose ps
+          "
+
+      - name: Run smoke tests
+        run: |
+          sleep 60  # Wait for deployment
+          curl -f https://${{ secrets.PRODUCTION_DOMAIN }}/api/health || exit 1
+
+  # Notify deployment status
+  notify:
+    name: Notify Deployment Status
+    needs: [deploy-railway]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Deployment Success
+        if: needs.deploy-railway.result == 'success'
+        run: |
+          echo "✅ Deployment succeeded!"
+          # Add Slack/Discord notification here if needed
+
+      - name: Deployment Failed
+        if: needs.deploy-railway.result == 'failure'
+        run: |
+          echo "❌ Deployment failed!"
+          exit 1

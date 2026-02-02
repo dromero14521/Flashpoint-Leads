@@ -1,0 +1,58 @@
+# Railway Deployment Configuration
+# https://docs.railway.app/deploy/config-as-code
+
+[build]
+builder = "NIXPACKS"
+buildCommand = "echo 'Building AAA Platform...'"
+
+[deploy]
+startCommand = "echo 'Use service-specific start commands'"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+# Control Plane Service
+[[services]]
+name = "control-plane"
+source = "./aaa-platform/control-plane"
+
+[services.build]
+builder = "NIXPACKS"
+buildCommand = "npm install && npx prisma generate && npm run build"
+
+[services.deploy]
+startCommand = "npm start"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+
+[[services.domains]]
+# Railway will generate domain automatically
+# Add custom domain in Railway dashboard
+
+# GenAI Core Service
+[[services]]
+name = "genai-core"
+source = "./aaa-platform/genai-core"
+
+[services.build]
+builder = "NIXPACKS"
+buildCommand = "pip install -r requirements.txt"
+
+[services.deploy]
+startCommand = "python main_v2.py"
+healthcheckPath = "/health"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+
+[[services.domains]]
+# Internal service - accessed via control-plane
+
+# Database Service (PostgreSQL)
+[[services]]
+name = "postgres"
+source = "postgres:15"
+
+[services.deploy]
+restartPolicyType = "ON_FAILURE"
