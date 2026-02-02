@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -14,6 +14,9 @@ model User {
   firstName String?
   lastName  String?
   imageUrl  String?
+
+  // Multi-Tenant (userId is the tenantId in B2C model)
+  tenantId String @default("") // For future B2B multi-user tenants
 
   // Subscription
   stripeCustomerId       String?   @unique
@@ -34,12 +37,15 @@ model User {
   // Relations
   blueprints Blueprint[]
   settings   UserSettings?
+
+  @@index([tenantId])
 }
 
 model Blueprint {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  userId   String
+  tenantId String // For tenant isolation
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Input
   industry    String
@@ -61,12 +67,16 @@ model Blueprint {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([userId, tenantId])
 }
 
 model UserSettings {
-  id     String @id @default(cuid())
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  userId   String @unique
+  tenantId String // For tenant isolation
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Notifications
   emailNotifications Boolean @default(true)
@@ -79,6 +89,8 @@ model UserSettings {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
 }
 
 model Lead {
@@ -175,8 +187,9 @@ model WebhookEvent {
 }
 
 model SubscriptionHistory {
-  id     String @id @default(cuid())
-  userId String
+  id       String @id @default(cuid())
+  userId   String
+  tenantId String // For tenant isolation
 
   // Subscription details
   stripeSubscriptionId String
@@ -190,6 +203,9 @@ model SubscriptionHistory {
   status    String // active, canceled, past_due, etc.
 
   createdAt DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([userId, tenantId])
 }
 
 model UsageEvent {

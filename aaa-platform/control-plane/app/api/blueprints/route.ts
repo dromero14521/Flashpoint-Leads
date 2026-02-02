@@ -1,6 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { tenantDb, prisma } from "@/lib/db";
 
 // GET /api/blueprints - List user's blueprints
 export async function GET() {
@@ -109,8 +109,8 @@ export async function POST(request: Request) {
     const genaiData = await genaiResponse.json();
     const blueprintData = genaiData.blueprint;
 
-    // Save blueprint to database
-    const blueprint = await prisma.blueprint.create({
+    // Save blueprint to database (tenantId automatically injected)
+    const blueprint = await tenantDb.blueprint.create({
       data: {
         userId: user.id,
         industry,

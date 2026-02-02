@@ -1,15 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+/**
+ * Legacy Prisma Client Export
+ *
+ * This file now re-exports from lib/db.ts for backwards compatibility.
+ * New code should import from "@/lib/db" directly and use either:
+ * - `prisma` for direct database access (admin/migrations only)
+ * - `tenantDb` for tenant-aware operations (recommended)
+ */
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-  });
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
-export default prisma;
+export { prisma, prisma as default } from "./db";

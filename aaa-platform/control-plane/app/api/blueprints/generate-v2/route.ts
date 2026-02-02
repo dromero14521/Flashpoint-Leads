@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getUserTier, getUserTenantId } from "@/lib/clerk";
 import { withUsageGate } from "@/lib/feature-gate";
-import { prisma } from "@/lib/prisma";
+import { tenantDb } from "@/lib/db";
 
 interface BlueprintRequestBody {
   industry: string;
@@ -75,8 +75,8 @@ export async function POST(req: NextRequest) {
 
       const result = await response.json();
 
-      // Save blueprint to database
-      const blueprint = await prisma.blueprint.create({
+      // Save blueprint to database (tenantId automatically injected)
+      const blueprint = await tenantDb.blueprint.create({
         data: {
           userId,
           industry: body.industry,

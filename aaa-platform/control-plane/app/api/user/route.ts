@@ -26,9 +26,12 @@ export async function GET() {
           firstName: clerkUser.firstName,
           lastName: clerkUser.lastName,
           imageUrl: clerkUser.imageUrl,
+          tenantId: userId, // In B2C model, userId is the tenantId
           referralCode: generateReferralCode(),
           settings: {
-            create: {},
+            create: {
+              tenantId: userId, // Match parent tenantId
+            },
           },
         },
         include: { settings: true },
