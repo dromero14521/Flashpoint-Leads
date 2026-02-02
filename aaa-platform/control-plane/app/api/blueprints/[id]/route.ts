@@ -1,10 +1,10 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { tenantDb, prisma } from "@/lib/db";
 
 // GET /api/blueprints/[id] - Get single blueprint
 export async function GET(
-  request: Request,
+  _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -23,7 +23,8 @@ export async function GET(
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const blueprint = await prisma.blueprint.findFirst({
+    // Use tenant-aware client - automatically filters by tenantId
+    const blueprint = await tenantDb.blueprint.findFirst({
       where: { id, userId: user.id },
     });
 
@@ -60,16 +61,23 @@ export async function PATCH(
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const blueprint = await prisma.blueprint.updateMany({
+    // Use tenant-aware client for update with security check
+    // First verify the blueprint exists and belongs to user
+    const existing = await tenantDb.blueprint.findFirst({
       where: { id, userId: user.id },
-      data: updates,
     });
 
-    if (blueprint.count === 0) {
+    if (!existing) {
       return NextResponse.json({ error: "Blueprint not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true });
+    // Update the blueprint (tenantId already verified)
+    const blueprint = await tenantDb.blueprint.update({
+      where: { id: existing.id },
+      data: updates,
+    });
+
+    return NextResponse.json({ success: true, blueprint });
   } catch (error) {
     console.error("Error updating blueprint:", error);
     return NextResponse.json({ error: "Failed to update blueprint" }, { status: 500 });
@@ -78,7 +86,7 @@ export async function PATCH(
 
 // DELETE /api/blueprints/[id] - Delete blueprint
 export async function DELETE(
-  request: Request,
+  _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -97,13 +105,20 @@ export async function DELETE(
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const blueprint = await prisma.blueprint.deleteMany({
+    // Use tenant-aware client for delete with security check
+    // First verify the blueprint exists and belongs to user
+    const existing = await tenantDb.blueprint.findFirst({
       where: { id, userId: user.id },
     });
 
-    if (blueprint.count === 0) {
+    if (!existing) {
       return NextResponse.json({ error: "Blueprint not found" }, { status: 404 });
     }
+
+    // Delete the blueprint (tenantId already verified)
+    await tenantDb.blueprint.delete({
+      where: { id: existing.id },
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

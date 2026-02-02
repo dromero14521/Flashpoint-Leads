@@ -18,7 +18,8 @@ export async function GET() {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const blueprints = await prisma.blueprint.findMany({
+    // Use tenant-aware client for automatic tenant filtering
+    const blueprints = await tenantDb.blueprint.findMany({
       where: { userId: user.id },
       orderBy: { createdAt: "desc" },
     });
@@ -66,7 +67,8 @@ export async function POST(request: Request) {
     thisMonth.setDate(1);
     thisMonth.setHours(0, 0, 0, 0);
 
-    const blueprintCount = await prisma.blueprint.count({
+    // Use tenant-aware client for counting blueprints
+    const blueprintCount = await tenantDb.blueprint.count({
       where: {
         userId: user.id,
         createdAt: { gte: thisMonth },

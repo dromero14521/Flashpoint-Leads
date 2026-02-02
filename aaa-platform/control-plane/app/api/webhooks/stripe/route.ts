@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getStripe, PRICE_IDS } from "@/lib/stripe";
 import { updateSubscriptionTier } from "@/lib/clerk";
-import prisma from "@/lib/prisma";
+import { tenantDb, prisma } from "@/lib/db";
 
 const stripe = getStripe();
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -174,7 +174,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     }
 
     // Log subscription history
-    await prisma.subscriptionHistory.create({
+    await tenantDb.subscriptionHistory.create({
       data: {
         userId: user.id,
         stripeSubscriptionId: subscriptionId,
@@ -205,7 +205,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     }
 
     // Log payment
-    await prisma.subscriptionHistory.create({
+    await tenantDb.subscriptionHistory.create({
       data: {
         userId: user.id,
         stripeSubscriptionId: `onetime_${session.id}`,
@@ -263,7 +263,7 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
   }
 
   // Log subscription history
-  await prisma.subscriptionHistory.create({
+  await tenantDb.subscriptionHistory.create({
     data: {
       userId: user.id,
       stripeSubscriptionId: subscription.id,
@@ -328,7 +328,7 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 
   // Log tier change if tier changed
   if (oldTier !== tier || oldPriceId !== priceId) {
-    await prisma.subscriptionHistory.create({
+    await tenantDb.subscriptionHistory.create({
       data: {
         userId: user.id,
         stripeSubscriptionId: subscription.id,
@@ -383,7 +383,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   }
 
   // Log cancellation
-  await prisma.subscriptionHistory.create({
+  await tenantDb.subscriptionHistory.create({
     data: {
       userId: user.id,
       stripeSubscriptionId: subscription.id,
