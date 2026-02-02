@@ -1,0 +1,45 @@
+{
+  "project": "Apex Automation Architect (AAA) Platform",
+  "version": "1.0.0",
+  "description": "Multi-tenant AI-driven automation architecture SaaS",
+
+  "context_files": ["CLAUDE.md", "SKILLS.md", "aaa-platform/README.md"],
+
+  "ignore_patterns": [
+    "node_modules/**",
+    ".venv/**",
+    "venv/**",
+    "__pycache__/**",
+    ".git/**",
+    "*.log",
+    ".env"
+  ],
+
+  "tools": {
+    "preferred_shell": "bash",
+    "package_manager": "npm",
+    "python_version": "3.10"
+  },
+
+  "conventions": {
+    "typescript": {
+      "strict": true,
+      "component_style": "functional"
+    },
+    "python": {
+      "style": "black",
+      "type_hints": true
+    },
+    "git": {
+      "branch_prefix": "feature/",
+      "commit_style": "conventional"
+    }
+  },
+
+  "external_services": {
+    "auth": "Clerk",
+    "payments": "Stripe",
+    "llm": "OpenRouter",
+    "hosting": ["Railway", "Vercel", "Docker"]
+  }
+}

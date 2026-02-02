@@ -6,7 +6,7 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/audit",
   "/book-call",
-  "/api/webhooks/(.*)",
+  "/api/webhooks/(.*)", // Includes both Stripe and Clerk webhooks
   "/api/leads",
   "/api/audit",
   "/api/strategy-call",
