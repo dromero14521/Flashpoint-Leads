@@ -1,0 +1,661 @@
+# Production API Keys Setup Guide
+## Complete Step-by-Step Instructions
+
+**Time Required**: 30-45 minutes
+**Prerequisites**: None (we'll create everything from scratch)
+
+---
+
+## 📋 Overview
+
+You need to gather 5 types of credentials:
+
+| Service | Keys Needed | Est. Time |
+|---------|-------------|-----------|
+| 1. Clerk | 2 keys | 5 minutes |
+| 2. Stripe | 6-7 keys | 20 minutes |
+| 3. OpenRouter | 1 key | 5 minutes |
+| 4. Sentry (optional) | 1 key | 5 minutes |
+| **TOTAL** | **9-10 keys** | **30-35 min** |
+
+---
+
+## 🔐 Part 1: Clerk Authentication Keys (5 minutes)
+
+### What You're Getting
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` - Client-side key (safe to expose)
+- `CLERK_SECRET_KEY` - Server-side key (keep secret!)
+
+### Step-by-Step Instructions
+
+#### Step 1: Access Clerk Dashboard
+```
+1. Open browser
+2. Go to: https://dashboard.clerk.com
+3. Sign in (or create account if needed)
+```
+
+#### Step 2: Select Your Application
+```
+If you have existing app:
+├─ Click on your application name
+└─ Skip to Step 3
+
+If you need to create app:
+├─ Click "Create Application"
+├─ Name: "AAA Platform Production"
+├─ Select authentication methods:
+│  ✅ Email
+│  ✅ Google (recommended)
+│  ✅ GitHub (optional)
+└─ Click "Create Application"
+```
+
+#### Step 3: Switch to LIVE Mode
+```
+⚠️ CRITICAL STEP - Don't skip this!
+
+1. Look at top-right corner of dashboard
+2. Find toggle switch that says "Development" or "Test"
+3. Click to switch to "PRODUCTION" or "LIVE" mode
+4. Confirm the switch if prompted
+
+Visual indicator:
+- Test mode: Usually gray or blue badge
+- Live mode: Usually green badge saying "PRODUCTION"
+```
+
+#### Step 4: Navigate to API Keys
+```
+Left sidebar:
+1. Click "API Keys"
+   OR
+1. Click "Configure" → "API Keys"
+```
+
+#### Step 5: Copy Your Keys
+```
+You'll see two sections:
+
+Section 1: "Publishable key"
+├─ Look for key starting with: pk_live_
+├─ Click "Copy" button
+├─ Paste into notepad/text file
+└─ Label it: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+
+Section 2: "Secret keys"
+├─ Look for key starting with: sk_live_
+├─ Click "Copy" button or "Reveal" then copy
+├─ Paste into notepad/text file
+└─ Label it: CLERK_SECRET_KEY
+
+⚠️ IMPORTANT:
+- pk_live_* = Safe to use in frontend
+- sk_live_* = NEVER expose in frontend code
+```
+
+#### Step 6: Verify Your Keys
+```
+Your keys should look like this:
+
+✅ Correct format:
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsucmVnaW9uYWwucHJvZC4xMjM0NTY3OA
+CLERK_SECRET_KEY=sk_live_abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJ
+
+❌ WRONG (test keys):
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxxxx  ← Has "test"!
+CLERK_SECRET_KEY=sk_test_xxxxx  ← Has "test"!
+```
+
+### Troubleshooting
+
+**Problem**: I only see `pk_test_` and `sk_test_` keys
+**Solution**: You're still in test mode! Go back to Step 3 and switch to LIVE/PRODUCTION mode.
+
+**Problem**: I don't see any keys
+**Solution**:
+1. Make sure you selected your application
+2. Check you're in the API Keys section
+3. Try refreshing the page
+
+**Problem**: My application is still in development
+**Solution**: That's okay! You can still get live keys. Just make sure you're in PRODUCTION mode when copying them.
+
+---
+
+## 💳 Part 2: Stripe Payment Keys (20 minutes)
+
+### What You're Getting
+- `STRIPE_SECRET_KEY` - Main API key
+- `STRIPE_WEBHOOK_SECRET` - Webhook signature verification (get this later)
+- `STRIPE_PRICE_TIER2_MONTHLY_99` - $99/month plan
+- `STRIPE_PRICE_TIER2_MONTHLY_199` - $199/month plan
+- `STRIPE_PRICE_TIER3_ONETIME_2500` - $2,500 one-time
+- `STRIPE_PRICE_TIER3_ONETIME_5000` - $5,000 one-time
+
+### Step-by-Step Instructions
+
+#### Step 1: Access Stripe Dashboard
+```
+1. Open browser
+2. Go to: https://dashboard.stripe.com
+3. Sign in (or create account if needed)
+```
+
+#### Step 2: Complete Stripe Activation (If Needed)
+```
+If you see "Activate your account" banner:
+├─ Click "Activate account"
+├─ Provide business details:
+│  ├─ Business type: Individual or Company
+│  ├─ Industry: Software
+│  ├─ Business description: "SaaS automation platform"
+│  └─ Website: (your domain or "Coming soon")
+├─ Provide personal details (required by law)
+├─ Add bank account (for payouts)
+└─ Submit for review
+
+⏰ Activation can take 1-2 business days
+💡 TIP: You can still get API keys before activation!
+```
+
+#### Step 3: Switch to LIVE Mode
+```
+⚠️ CRITICAL STEP - Don't skip this!
+
+1. Look at top-right corner of dashboard
+2. Find toggle switch
+3. Current state shows "Viewing test data"
+4. Click toggle to turn OFF test mode
+5. Confirm: "You're now viewing live data"
+
+Visual indicator:
+- Test mode: Blue/gray toggle, says "Viewing test data"
+- Live mode: Toggle OFF, says "Viewing live data" or just "Live"
+```
+
+#### Step 4: Get Your Secret Key
+```
+Left sidebar:
+1. Click "Developers"
+2. Click "API keys"
+
+You'll see two keys:
+
+Section 1: "Publishable key"
+├─ Starts with: pk_live_
+└─ (Not needed for backend, but safe to use)
+
+Section 2: "Secret key"
+├─ Starts with: sk_live_
+├─ Click "Reveal test key" button
+├─ Click "Copy" button
+├─ Paste into notepad
+└─ Label it: STRIPE_SECRET_KEY
+
+⚠️ IMPORTANT:
+- This key should NEVER be exposed in frontend code
+- Treat it like a password
+```
+
+#### Step 5: Create Tier 2 Product ($99/month)
+```
+Left sidebar:
+1. Click "Products" (or "Product catalog")
+2. Click "+ Add product" button
+
+Fill out form:
+┌─────────────────────────────────────────┐
+│ Name: AAA Platform - Architect Tier     │
+│ Description: Full access to automation  │
+│              blueprints and features    │
+│                                         │
+│ Pricing:                                │
+│ ├─ Pricing model: Standard pricing     │
+│ ├─ Price: $99.00                       │
+│ ├─ Billing period: Monthly             │
+│ └─ Currency: USD                       │
+│                                         │
+│ [Save product]                          │
+└─────────────────────────────────────────┘
+
+After saving:
+├─ Click on the product you just created
+├─ Find the "API ID" section
+├─ Copy the Price ID (starts with price_)
+├─ Paste into notepad
+└─ Label it: STRIPE_PRICE_TIER2_MONTHLY_99
+```
+
+#### Step 6: Create Tier 2 Product ($199/month)
+```
+Repeat Step 5 with these values:
+┌─────────────────────────────────────────┐
+│ Name: AAA Platform - Architect Tier Pro│
+│ Description: Premium automation access  │
+│              with priority support      │
+│                                         │
+│ Pricing:                                │
+│ ├─ Price: $199.00                      │
+│ ├─ Billing period: Monthly             │
+│ └─ Currency: USD                       │
+└─────────────────────────────────────────┘
+
+Copy the Price ID and label it: STRIPE_PRICE_TIER2_MONTHLY_199
+```
+
+#### Step 7: Create Tier 3 Product ($2,500 one-time)
+```
+Create new product:
+┌─────────────────────────────────────────┐
+│ Name: AAA Platform - Apex Implementation│
+│ Description: White-glove implementation │
+│              and custom automation      │
+│                                         │
+│ Pricing:                                │
+│ ├─ Pricing model: Standard pricing     │
+│ ├─ Price: $2,500.00                    │
+│ ├─ Billing period: One time           │
+│ └─ Currency: USD                       │
+└─────────────────────────────────────────┘
+
+Copy the Price ID and label it: STRIPE_PRICE_TIER3_ONETIME_2500
+```
+
+#### Step 8: Create Tier 3 Product ($5,000 one-time)
+```
+Create new product:
+┌─────────────────────────────────────────┐
+│ Name: AAA Platform - Apex Premium      │
+│ Description: Premium white-glove       │
+│              implementation             │
+│                                         │
+│ Pricing:                                │
+│ ├─ Price: $5,000.00                    │
+│ ├─ Billing period: One time           │
+│ └─ Currency: USD                       │
+└─────────────────────────────────────────┘
+
+Copy the Price ID and label it: STRIPE_PRICE_TIER3_ONETIME_5000
+```
+
+#### Step 9: Get Webhook Secret (DO THIS AFTER DEPLOYMENT)
+```
+⏰ IMPORTANT: Do this AFTER you deploy to Railway and have a domain!
+
+Left sidebar:
+1. Click "Developers"
+2. Click "Webhooks"
+3. Click "+ Add endpoint"
+
+Fill out form:
+┌─────────────────────────────────────────┐
+│ Endpoint URL:                           │
+│ https://yourdomain.com/api/webhooks/stripe │
+│                                         │
+│ Events to send:                         │
+│ ✅ checkout.session.completed          │
+│ ✅ customer.subscription.created       │
+│ ✅ customer.subscription.updated       │
+│ ✅ customer.subscription.deleted       │
+│ ✅ invoice.payment_succeeded           │
+│ ✅ invoice.payment_failed              │
+│                                         │
+│ [Add endpoint]                          │
+└─────────────────────────────────────────┘
+
+After creating:
+├─ Click on the webhook you just created
+├─ Click "Signing secret" section
+├─ Click "Reveal"
+├─ Copy the secret (starts with whsec_)
+├─ Paste into notepad
+└─ Label it: STRIPE_WEBHOOK_SECRET
+```
+
+#### Step 10: Verify Your Stripe Keys
+```
+Your keys should look like this:
+
+✅ Correct format:
+STRIPE_SECRET_KEY=sk_live_51A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6
+STRIPE_PRICE_TIER2_MONTHLY_99=price_1A2B3C4D5E6F7G8H9I0J1K2L
+STRIPE_PRICE_TIER2_MONTHLY_199=price_1Z2Y3X4W5V6U7T8S9R0Q1P2O
+STRIPE_PRICE_TIER3_ONETIME_2500=price_1M2N3O4P5Q6R7S8T9U0V1W2X
+STRIPE_PRICE_TIER3_ONETIME_5000=price_1H2I3J4K5L6M7N8O9P0Q1R2S
+STRIPE_WEBHOOK_SECRET=whsec_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0
+
+❌ WRONG (test keys):
+STRIPE_SECRET_KEY=sk_test_xxxxx  ← Has "test"!
+STRIPE_PRICE_TIER2_MONTHLY_99=price_xxxxx_test  ← Test price!
+```
+
+### Troubleshooting
+
+**Problem**: I only see `sk_test_` key
+**Solution**: Toggle OFF "Viewing test data" in top-right corner.
+
+**Problem**: Stripe asks me to activate my account
+**Solution**: You can still create products and get keys! Activation just enables real payments.
+
+**Problem**: I can't create products
+**Solution**:
+1. Make sure you're in live mode (test mode toggle OFF)
+2. Products page is under "Products" or "Product catalog" in sidebar
+3. Try refreshing the page
+
+**Problem**: I created products but can't find the Price ID
+**Solution**:
+1. Click on the product
+2. Scroll down to "Pricing" section
+3. Click on the price row
+4. Look for "API ID" - this is your price_xxxxx
+
+---
+
+## 🤖 Part 3: OpenRouter API Key (5 minutes)
+
+### What You're Getting
+- `OPENROUTER_API_KEY` - LLM API access
+
+### Step-by-Step Instructions
+
+#### Step 1: Create OpenRouter Account
+```
+1. Go to: https://openrouter.ai
+2. Click "Sign in" (top right)
+3. Sign in with Google, GitHub, or email
+```
+
+#### Step 2: Add Credits
+```
+⚠️ IMPORTANT: OpenRouter requires prepaid credits
+
+Top navigation:
+1. Click "Credits" or your username
+2. Click "Add credits"
+3. Recommended: Add $10-20 for initial testing
+4. Complete payment
+
+💡 Cost estimate:
+- Blueprint generation: ~$0.10-0.50 per request
+- $10 = ~20-100 blueprints
+- $20 = ~40-200 blueprints
+```
+
+#### Step 3: Create API Key
+```
+Top navigation:
+1. Click "Keys" or "API Keys"
+2. Click "Create Key" or "+ New Key"
+3. Name: "AAA Platform Production"
+4. Click "Create"
+
+After creation:
+├─ Copy the key (starts with sk-or-v1-)
+├─ Paste into notepad
+└─ Label it: OPENROUTER_API_KEY
+
+⚠️ IMPORTANT:
+- Save this key NOW - you can't see it again!
+- If you lose it, delete and create a new one
+```
+
+#### Step 4: Set Default Model (Optional)
+```
+While in OpenRouter dashboard:
+1. Browse models at: https://openrouter.ai/models
+2. Recommended: anthropic/claude-3.5-sonnet
+3. Note the model ID for your .env file
+
+In your .env:
+OPENROUTER_MODEL=anthropic/claude-3.5-sonnet
+```
+
+#### Step 5: Verify Your Key
+```
+✅ Correct format:
+OPENROUTER_API_KEY=sk-or-v1-a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2
+
+❌ WRONG:
+OPENROUTER_API_KEY=sk-xxxxx  ← Too short!
+OPENROUTER_API_KEY=  ← Missing key!
+```
+
+### Troubleshooting
+
+**Problem**: I don't see the API key after creating it
+**Solution**: The key is shown only ONCE after creation. If you missed it, delete the key and create a new one.
+
+**Problem**: My API calls fail with "insufficient credits"
+**Solution**: Add more credits at https://openrouter.ai/credits
+
+**Problem**: Which model should I use?
+**Solution**: Use `anthropic/claude-3.5-sonnet` - best quality/cost ratio for blueprint generation.
+
+---
+
+## 📊 Part 4: Sentry Error Tracking (Optional, 5 minutes)
+
+### What You're Getting
+- `SENTRY_DSN` - Error tracking endpoint
+
+### Step-by-Step Instructions
+
+#### Step 1: Create Sentry Account
+```
+1. Go to: https://sentry.io
+2. Click "Get Started"
+3. Sign up with Google, GitHub, or email
+4. Choose free plan (5,000 events/month)
+```
+
+#### Step 2: Create Project
+```
+After sign up:
+1. Click "Create Project"
+2. Select platform: "Next.js"
+3. Alert frequency: "On every new issue" (recommended)
+4. Project name: "aaa-platform"
+5. Click "Create Project"
+```
+
+#### Step 3: Get Your DSN
+```
+After project creation:
+├─ You'll see a screen with setup instructions
+├─ Find "DSN" section
+├─ Copy the DSN (starts with https://)
+├─ Paste into notepad
+└─ Label it: SENTRY_DSN
+
+Or navigate manually:
+1. Click your project name
+2. Settings → Projects → [Your Project]
+3. Client Keys (DSN)
+4. Copy the DSN
+```
+
+#### Step 4: Verify Your DSN
+```
+✅ Correct format:
+SENTRY_DSN=https://a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6@o123456.ingest.sentry.io/7890123
+
+Structure: https://[PUBLIC_KEY]@[ORG_ID].ingest.sentry.io/[PROJECT_ID]
+```
+
+---
+
+## 📝 Final Checklist
+
+### All Keys Gathered
+
+Copy this template and fill it in:
+
+```bash
+# ==================================
+# AAA Platform - Production Keys
+# ==================================
+
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_
+CLERK_SECRET_KEY=sk_live_
+
+# Stripe Payments
+STRIPE_SECRET_KEY=sk_live_
+STRIPE_WEBHOOK_SECRET=whsec_  # Get after deployment!
+
+# Stripe Price IDs
+STRIPE_PRICE_TIER2_MONTHLY_99=price_
+STRIPE_PRICE_TIER2_MONTHLY_199=price_
+STRIPE_PRICE_TIER3_ONETIME_2500=price_
+STRIPE_PRICE_TIER3_ONETIME_5000=price_
+
+# OpenRouter
+OPENROUTER_API_KEY=sk-or-v1-
+OPENROUTER_MODEL=anthropic/claude-3.5-sonnet
+
+# Sentry (Optional)
+SENTRY_DSN=https://
+```
+
+### Verification Checklist
+
+Before proceeding to deployment:
+
+**Clerk:**
+- [ ] Keys start with `pk_live_` and `sk_live_` (not test!)
+- [ ] Copied from PRODUCTION/LIVE mode
+- [ ] Keys saved in secure location
+
+**Stripe:**
+- [ ] Key starts with `sk_live_` (not test!)
+- [ ] All 4 products created in Stripe dashboard
+- [ ] All 4 price IDs copied (start with `price_`)
+- [ ] Webhook secret will be obtained AFTER deployment
+- [ ] Stripe account in live mode (test toggle OFF)
+
+**OpenRouter:**
+- [ ] Key starts with `sk-or-v1-`
+- [ ] Credits added to account ($10+ recommended)
+- [ ] Model ID confirmed: `anthropic/claude-3.5-sonnet`
+
+**Sentry (Optional):**
+- [ ] DSN starts with `https://`
+- [ ] Project created in Sentry dashboard
+- [ ] Free tier activated (5k events/month)
+
+---
+
+## 🔒 Security Best Practices
+
+### Storing Your Keys
+
+**DO:**
+- ✅ Save keys in a password manager (1Password, LastPass)
+- ✅ Save keys in a secure notes app
+- ✅ Save in `.env` file (never commit to git!)
+- ✅ Use Railway's environment variables (secure)
+
+**DON'T:**
+- ❌ Commit keys to GitHub/GitLab
+- ❌ Share keys in Slack/Discord
+- ❌ Email keys to yourself
+- ❌ Save in plain text file in Dropbox
+- ❌ Use test keys in production
+
+### If Keys Are Compromised
+
+**Immediate actions:**
+
+1. **Clerk:**
+   - Dashboard → API Keys → Revoke compromised key
+   - Generate new key immediately
+   - Update Railway environment variables
+
+2. **Stripe:**
+   - Dashboard → Developers → API Keys
+   - Roll key (Stripe provides this feature)
+   - Update Railway environment variables
+
+3. **OpenRouter:**
+   - Dashboard → Keys → Delete compromised key
+   - Create new key
+   - Update Railway environment variables
+
+---
+
+## 🎯 Next Steps
+
+Now that you have all your API keys:
+
+### Option A: Deploy to Railway Immediately
+```
+✅ You have all keys ready
+✅ 2-4 hours available
+→ Proceed to Phase 2: Railway Deployment
+```
+
+### Option B: Save Keys and Deploy Later
+```
+✅ Keys saved securely
+⏰ Will deploy later
+→ Bookmark this guide for deployment day
+```
+
+### Option C: Test Keys Locally First
+```
+✅ Keys saved
+🧪 Want to test before production
+→ Update your local .env file
+→ Run: npm run dev
+→ Test authentication and payments
+```
+
+---
+
+## 📞 Support Resources
+
+### If You Get Stuck
+
+**Clerk Issues:**
+- Documentation: https://clerk.com/docs
+- Discord: https://discord.com/invite/b5rXHjAg7A
+- Email: support@clerk.com
+
+**Stripe Issues:**
+- Documentation: https://stripe.com/docs
+- Support: https://support.stripe.com
+- Chat: Available in Stripe dashboard
+
+**OpenRouter Issues:**
+- Documentation: https://openrouter.ai/docs
+- Discord: https://discord.gg/openrouter
+- Email: help@openrouter.ai
+
+**Sentry Issues:**
+- Documentation: https://docs.sentry.io
+- Support: https://sentry.io/support
+- Community: https://forum.sentry.io
+
+---
+
+## 🎉 You're Ready!
+
+With all API keys gathered, you're now ready to deploy the AAA Platform to production!
+
+**Keys Needed:**
+- ✅ Clerk keys (2)
+- ✅ Stripe keys (5-6)
+- ✅ OpenRouter key (1)
+- ✅ Sentry DSN (1, optional)
+
+**Total: 8-9 keys** 🔑
+
+**Next:** Proceed to Railway deployment (Phase 2)
+
+---
+
+**Last Updated**: 2026-02-02
+**Estimated Time**: 30-45 minutes
+**Difficulty**: Easy (just follow steps!)
