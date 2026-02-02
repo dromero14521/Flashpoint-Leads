@@ -8,156 +8,186 @@ datasource db {
 }
 
 model User {
-  id              String   @id @default(cuid())
-  clerkId         String   @unique
-  email           String   @unique
-  firstName       String?
-  lastName        String?
-  imageUrl        String?
-  
+  id        String  @id @default(cuid())
+  clerkId   String  @unique
+  email     String  @unique
+  firstName String?
+  lastName  String?
+  imageUrl  String?
+
   // Subscription
-  stripeCustomerId     String?   @unique
-  stripeSubscriptionId String?   @unique
-  stripePriceId        String?
+  stripeCustomerId       String?   @unique
+  stripeSubscriptionId   String?   @unique
+  stripePriceId          String?
   stripeCurrentPeriodEnd DateTime?
-  tier                 String    @default("free") // free, architect, apex
-  
+  tier                   String    @default("free") // free, architect, apex
+
   // Referrals
-  referralCode    String?  @unique
-  referredBy      String?
-  referralCount   Int      @default(0)
-  
+  referralCode  String? @unique
+  referredBy    String?
+  referralCount Int     @default(0)
+
   // Timestamps
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   // Relations
-  blueprints      Blueprint[]
-  settings        UserSettings?
+  blueprints Blueprint[]
+  settings   UserSettings?
 }
 
 model Blueprint {
-  id              String   @id @default(cuid())
-  userId          String
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   // Input
-  industry        String
-  revenueGoal     String
-  techStack       String   // JSON string
-  painPoints      String
-  
+  industry    String
+  revenueGoal String
+  techStack   String // JSON string
+  painPoints  String
+
   // Output
-  strategicDiagnosis    String?
-  proposedArchitecture  String?
-  components            String?  // JSON string
-  automationSteps       String?  // JSON string
-  estimatedImpact       String?
-  rawBlueprint          String?  // Full JSON response
-  
+  strategicDiagnosis   String?
+  proposedArchitecture String?
+  components           String? // JSON string
+  automationSteps      String? // JSON string
+  estimatedImpact      String?
+  rawBlueprint         String? // Full JSON response
+
   // Metadata
-  status          String   @default("draft") // draft, generated, implemented
-  isFavorite      Boolean  @default(false)
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  status     String  @default("draft") // draft, generated, implemented
+  isFavorite Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model UserSettings {
-  id              String   @id @default(cuid())
-  userId          String   @unique
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   // Notifications
-  emailNotifications    Boolean @default(true)
-  marketingEmails       Boolean @default(false)
-  weeklyDigest          Boolean @default(true)
-  
+  emailNotifications Boolean @default(true)
+  marketingEmails    Boolean @default(false)
+  weeklyDigest       Boolean @default(true)
+
   // Preferences
-  defaultModel          String  @default("anthropic/claude-3.5-sonnet")
-  timezone              String  @default("America/New_York")
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  defaultModel String @default("anthropic/claude-3.5-sonnet")
+  timezone     String @default("America/New_York")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Lead {
-  id              String   @id @default(cuid())
-  email           String   @unique
-  firstName       String?
-  lastName        String?
-  company         String?
-  industry        String?
-  
+  id        String  @id @default(cuid())
+  email     String  @unique
+  firstName String?
+  lastName  String?
+  company   String?
+  industry  String?
+
   // Lead source
-  source          String   @default("organic") // organic, referral, cold, content
-  leadMagnet      String?  // which lead magnet they downloaded
-  
+  source     String  @default("organic") // organic, referral, cold, content
+  leadMagnet String? // which lead magnet they downloaded
+
   // Qualification
   estimatedRevenue String?
   painPoints       String?
   status           String  @default("new") // new, contacted, qualified, converted, lost
-  
+
   // Tracking
-  utmSource       String?
-  utmMedium       String?
-  utmCampaign     String?
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model StrategyCall {
-  id              String   @id @default(cuid())
-  
+  id String @id @default(cuid())
+
   // Contact Info
-  email           String
-  firstName       String
-  lastName        String?
-  company         String?
-  phone           String?
-  
+  email     String
+  firstName String
+  lastName  String?
+  company   String?
+  phone     String?
+
   // Business Info
-  industry        String
-  revenue         String?
-  teamSize        String?
-  
+  industry String
+  revenue  String?
+  teamSize String?
+
   // Pain & Goals
   biggestChallenge String
   desiredOutcome   String
   timeline         String?
-  
+
   // Scheduling
-  preferredDate   DateTime?
-  preferredTime   String?
-  timezone        String?
-  
+  preferredDate DateTime?
+  preferredTime String?
+  timezone      String?
+
   // Status
-  status          String   @default("pending") // pending, confirmed, completed, no-show, converted
-  notes           String?
-  outcome         String?  // won, lost, postponed
-  dealValue       Float?
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  status    String  @default("pending") // pending, confirmed, completed, no-show, converted
+  notes     String?
+  outcome   String? // won, lost, postponed
+  dealValue Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model AuditSubmission {
-  id              String   @id @default(cuid())
-  email           String
-  
+  id    String @id @default(cuid())
+  email String
+
   // Audit Answers
-  industry        String
-  monthlyRevenue  String
-  hoursOnManualTasks  Int
-  hourlyRate      Float?
-  topPainPoints   String   // JSON array
-  currentTools    String   // JSON array
+  industry           String
+  monthlyRevenue     String
+  hoursOnManualTasks Int
+  hourlyRate         Float?
+  topPainPoints      String // JSON array
+  currentTools       String // JSON array
   automationAttempts String?
-  
+
   // Calculated
-  annualCost      Float?
+  annualCost       Float?
   potentialSavings Float?
-  
-  createdAt       DateTime @default(now())
+
+  createdAt DateTime @default(now())
+}
+
+model WebhookEvent {
+  id            String  @id @default(cuid())
+  stripeEventId String  @unique
+  eventType     String
+  processed     Boolean @default(false)
+  attempts      Int     @default(0)
+  lastError     String?
+
+  createdAt   DateTime  @default(now())
+  processedAt DateTime?
+}
+
+model SubscriptionHistory {
+  id     String @id @default(cuid())
+  userId String
+
+  // Subscription details
+  stripeSubscriptionId String
+  oldTier              String?
+  newTier              String
+  oldPriceId           String?
+  newPriceId           String?
+
+  // Event details
+  eventType String // subscription_created, subscription_updated, subscription_canceled
+  status    String // active, canceled, past_due, etc.
+
+  createdAt DateTime @default(now())
 }
