@@ -47,20 +47,37 @@ export async function POST(request: Request) {
       });
     }
 
-    // Determine mode based on tier
-    const mode = tier === "apex" ? "payment" : "subscription";
-    const selectedPriceId = priceId || (tier === "apex" ? PRICE_IDS.APEX : PRICE_IDS.ARCHITECT_MONTHLY);
+    // Determine mode based on tier (support both new and legacy naming)
+    const isTier3 = tier === "tier3" || tier === "apex";
+    const mode = isTier3 ? "payment" : "subscription";
+
+    // Select price ID with fallback to defaults
+    let selectedPriceId = priceId;
+    if (!selectedPriceId) {
+      if (isTier3) {
+        selectedPriceId = PRICE_IDS.TIER3_ONETIME_2500 || PRICE_IDS.APEX;
+      } else if (tier === "tier2" || tier === "architect") {
+        selectedPriceId = PRICE_IDS.TIER2_MONTHLY_99 || PRICE_IDS.ARCHITECT_MONTHLY;
+      }
+    }
 
     if (!selectedPriceId) {
       return NextResponse.json({ error: "Price ID not configured" }, { status: 400 });
     }
 
+    // Create checkout session with proper metadata
     const session = await createCheckoutSession({
       customerId: customer.id,
       priceId: selectedPriceId,
       successUrl: `${process.env.NEXT_PUBLIC_URL}/dashboard?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${process.env.NEXT_PUBLIC_URL}/dashboard?canceled=true`,
       mode,
+      metadata: {
+        userId: userId,
+        clerkId: userId,
+        tier: tier,
+        userEmail: email,
+      },
     });
 
     return NextResponse.json({ url: session.url });
