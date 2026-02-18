@@ -1,12 +1,14 @@
 -- CreateTable
 CREATE TABLE "UsageEvent" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "tenantId" TEXT NOT NULL,
     "action" TEXT NOT NULL,
     "month" TEXT NOT NULL,
     "metadata" TEXT,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "UsageEvent_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

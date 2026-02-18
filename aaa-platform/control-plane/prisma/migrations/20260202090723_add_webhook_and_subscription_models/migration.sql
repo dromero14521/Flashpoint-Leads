@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "clerkId" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "firstName" TEXT,
@@ -9,18 +9,20 @@ CREATE TABLE "User" (
     "stripeCustomerId" TEXT,
     "stripeSubscriptionId" TEXT,
     "stripePriceId" TEXT,
-    "stripeCurrentPeriodEnd" DATETIME,
+    "stripeCurrentPeriodEnd" TIMESTAMP(3),
     "tier" TEXT NOT NULL DEFAULT 'free',
     "referralCode" TEXT,
     "referredBy" TEXT,
     "referralCount" INTEGER NOT NULL DEFAULT 0,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Blueprint" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "industry" TEXT NOT NULL,
     "revenueGoal" TEXT NOT NULL,
@@ -34,28 +36,30 @@ CREATE TABLE "Blueprint" (
     "rawBlueprint" TEXT,
     "status" TEXT NOT NULL DEFAULT 'draft',
     "isFavorite" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
-    CONSTRAINT "Blueprint_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Blueprint_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "UserSettings" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "emailNotifications" BOOLEAN NOT NULL DEFAULT true,
     "marketingEmails" BOOLEAN NOT NULL DEFAULT false,
     "weeklyDigest" BOOLEAN NOT NULL DEFAULT true,
     "defaultModel" TEXT NOT NULL DEFAULT 'anthropic/claude-3.5-sonnet',
     "timezone" TEXT NOT NULL DEFAULT 'America/New_York',
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
-    CONSTRAINT "UserSettings_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "UserSettings_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Lead" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "firstName" TEXT,
     "lastName" TEXT,
@@ -69,13 +73,15 @@ CREATE TABLE "Lead" (
     "utmSource" TEXT,
     "utmMedium" TEXT,
     "utmCampaign" TEXT,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Lead_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "StrategyCall" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT,
@@ -87,48 +93,54 @@ CREATE TABLE "StrategyCall" (
     "biggestChallenge" TEXT NOT NULL,
     "desiredOutcome" TEXT NOT NULL,
     "timeline" TEXT,
-    "preferredDate" DATETIME,
+    "preferredDate" TIMESTAMP(3),
     "preferredTime" TEXT,
     "timezone" TEXT,
     "status" TEXT NOT NULL DEFAULT 'pending',
     "notes" TEXT,
     "outcome" TEXT,
-    "dealValue" REAL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "dealValue" DOUBLE PRECISION,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "StrategyCall_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "AuditSubmission" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "industry" TEXT NOT NULL,
     "monthlyRevenue" TEXT NOT NULL,
     "hoursOnManualTasks" INTEGER NOT NULL,
-    "hourlyRate" REAL,
+    "hourlyRate" DOUBLE PRECISION,
     "topPainPoints" TEXT NOT NULL,
     "currentTools" TEXT NOT NULL,
     "automationAttempts" TEXT,
-    "annualCost" REAL,
-    "potentialSavings" REAL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "annualCost" DOUBLE PRECISION,
+    "potentialSavings" DOUBLE PRECISION,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "AuditSubmission_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "WebhookEvent" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "stripeEventId" TEXT NOT NULL,
     "eventType" TEXT NOT NULL,
     "processed" BOOLEAN NOT NULL DEFAULT false,
     "attempts" INTEGER NOT NULL DEFAULT 0,
     "lastError" TEXT,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "processedAt" DATETIME
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "processedAt" TIMESTAMP(3),
+
+    CONSTRAINT "WebhookEvent_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "SubscriptionHistory" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "stripeSubscriptionId" TEXT NOT NULL,
     "oldTier" TEXT,
@@ -137,7 +149,9 @@ CREATE TABLE "SubscriptionHistory" (
     "newPriceId" TEXT NOT NULL,
     "eventType" TEXT NOT NULL,
     "status" TEXT NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "SubscriptionHistory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -163,3 +177,9 @@ CREATE UNIQUE INDEX "Lead_email_key" ON "Lead"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "WebhookEvent_stripeEventId_key" ON "WebhookEvent"("stripeEventId");
+
+-- AddForeignKey
+ALTER TABLE "Blueprint" ADD CONSTRAINT "Blueprint_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserSettings" ADD CONSTRAINT "UserSettings_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
