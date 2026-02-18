@@ -91,7 +91,7 @@ def get_team_id() -> str:
 def get_workflow_states(team_id: str) -> dict[str, str]:
     """Returns {name: id} map for workflow states."""
     query = """
-    query WorkflowStates($teamId: String!) {
+    query WorkflowStates($teamId: ID!) {
       workflowStates(filter: { team: { id: { eq: $teamId } } }) {
         nodes { id name }
       }
@@ -103,14 +103,14 @@ def get_workflow_states(team_id: str) -> dict[str, str]:
 
 def find_existing_issue(github_url: str) -> str | None:
     query = """
-    query SearchIssue($query: String!) {
-      issueSearch(query: $query, last: 1) {
+    query FindIssue($url: String!) {
+      issues(filter: { description: { contains: $url } }) {
         nodes { id }
       }
     }
     """
-    result = graphql(query, {"query": github_url})
-    nodes = result["issueSearch"]["nodes"]
+    result = graphql(query, {"url": github_url})
+    nodes = result["issues"]["nodes"]
     return nodes[0]["id"] if nodes else None
 
 

@@ -47,14 +47,14 @@ def get_team_id() -> str:
 def find_existing_issue(github_url: str) -> str | None:
     """Find a Linear issue that was created from this GitHub URL."""
     query = """
-    query SearchIssue($query: String!) {
-      issueSearch(query: $query, last: 1) {
+    query FindIssue($url: String!) {
+      issues(filter: { description: { contains: $url } }) {
         nodes { id title }
       }
     }
     """
-    result = graphql(query, {"query": github_url})
-    nodes = result["issueSearch"]["nodes"]
+    result = graphql(query, {"url": github_url})
+    nodes = result["issues"]["nodes"]
     return nodes[0]["id"] if nodes else None
 
 
@@ -62,7 +62,7 @@ def map_state(github_state: str, team_id: str) -> str | None:
     """Return the Linear workflow state ID matching the GitHub state."""
     target_name = "Done" if github_state == "closed" else "Todo"
     query = """
-    query WorkflowStates($teamId: String!) {
+    query WorkflowStates($teamId: ID!) {
       workflowStates(filter: { team: { id: { eq: $teamId } } }) {
         nodes { id name }
       }
