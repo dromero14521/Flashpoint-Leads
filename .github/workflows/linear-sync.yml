@@ -27,6 +27,12 @@ env:
   LINEAR_API_URL: https://api.linear.app/graphql
   SYNC_CONFIG: sync-config.yml
 
+# Grant the token permission to read issues and PRs
+permissions:
+  issues: read
+  pull-requests: read
+  contents: read
+
 jobs:
   # ─────────────────────────────────────────────
   # Handle real-time events (issues / PRs)
