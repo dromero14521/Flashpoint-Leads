@@ -30,7 +30,7 @@ export default function NewBlueprintPage() {
     setError(null);
 
     try {
-      const response = await fetch("/api/blueprints", {
+      const response = await fetch("/api/blueprints/generate-v2", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
