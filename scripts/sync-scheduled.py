@@ -60,9 +60,8 @@ def fetch_github_issues(repo: str, since: str | None = None) -> list[dict]:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def linear_headers() -> dict:
-    key = os.environ["LINEAR_API_KEY"]
     return {
-        "Authorization": f"Bearer {key}",
+        "Authorization": os.environ["LINEAR_API_KEY"],
         "Content-Type": "application/json",
     }
 

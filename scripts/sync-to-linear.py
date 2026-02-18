@@ -16,7 +16,7 @@ LINEAR_API_URL = "https://api.linear.app/graphql"
 
 def linear_headers():
     key = os.environ["LINEAR_API_KEY"]
-    return {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
+    return {"Authorization": key, "Content-Type": "application/json"}
 
 
 def graphql(query: str, variables: dict | None = None) -> dict:
