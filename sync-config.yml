@@ -1,0 +1,58 @@
+version: "1.0"
+
+sync:
+  enabled: true
+  direction: github_to_linear   # github_to_linear | bidirectional
+  mode: hybrid                   # real-time events + scheduled fallback
+
+scheduling:
+  incremental:
+    cron: "*/15 * * * *"        # Every 15 minutes
+    enabled: true
+  full:
+    cron: "0 3 * * *"           # Daily at 3 AM UTC
+    enabled: true
+
+mapping:
+  states:
+    github_to_linear:
+      open: "Todo"
+      closed: "Done"
+
+  priorities:
+    label_to_linear_priority:
+      "priority/urgent": 1
+      "priority/high": 2
+      "priority/medium": 3
+      "priority/low": 4
+    default_priority: 3         # Medium if no label
+
+  # Prefix Linear issue titles with source context
+  title_prefix: "[GH]"
+
+filters:
+  github:
+    # Only sync issues with these labels (empty = sync all)
+    include_labels: []
+    # Never sync issues with these labels
+    exclude_labels:
+      - "no-sync"
+      - "wontfix"
+      - "duplicate"
+    # Skip bot-created issues
+    exclude_authors:
+      - "dependabot[bot]"
+      - "github-actions[bot]"
+
+conflict_resolution:
+  strategy: github_wins           # github_wins | linear_wins | newer_wins
+
+notifications:
+  on_failure:
+    github_annotation: true       # Use ::error:: annotation in Actions
+  on_success:
+    github_annotation: false
+
+monitoring:
+  report_file: sync-report.json
+  log_level: info                 # debug | info | warning | error

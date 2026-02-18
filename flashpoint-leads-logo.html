@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashpoint Leads LLC — Logo Concepts</title>
+
+  <!-- Google Fonts: Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold-light: #FFD86E;
+      --gold: #D5B038;
+      --gold-dark: #A57D02;
+      --gold-accent: #CD9900;
+      --bg: #09090b;
+      --surface: #141416;
+      --surface-2: #1c1c1f;
+      --border: #27272a;
+      --text: #e4e4e7;
+      --text-muted: #71717a;
+      --white: #fafafa;
+      --font: 'Space Grotesk', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    section {
+      padding: 5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-of-type { border-bottom: none; }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-bottom: 3rem;
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero {
+      padding: 6rem 0 4rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-dark);
+      padding: 0.35rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold) 30%, var(--gold-light) 55%, var(--gold) 75%, var(--gold-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .swatch {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .swatch:hover { transform: translateY(-2px); }
+
+    .swatch-color {
+      height: 100px;
+      width: 100%;
+    }
+
+    .swatch-info {
+      padding: 1rem;
+    }
+
+    .swatch-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.25rem;
+    }
+
+    .swatch-hex {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+
+    .swatch-role {
+      font-size: 0.7rem;
+      color: var(--gold);
+      margin-top: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ============================================
+       CONCEPT CARDS
+       ============================================ */
+    .concept {
+      padding: 4rem 0;
+    }
+
+    .concept-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .concept-number {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .concept-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .concept-rationale {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      max-width: 560px;
+    }
+
+    /* Logo Showcase Grid */
+    .logo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .logo-showcase { grid-template-columns: 1fr; }
+    }
+
+    .logo-card {
+      border-radius: 16px;
+      padding: 3rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 240px;
+      border: 1px solid var(--border);
+    }
+
+    .logo-card.dark {
+      background: var(--bg);
+    }
+
+    .logo-card.light {
+      background: #fafafa;
+    }
+
+    .logo-card.surface {
+      background: var(--surface);
+    }
+
+    .logo-card-label {
+      position: absolute;
+      top: 1rem;
+      left: 1.25rem;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .logo-card.light .logo-card-label {
+      color: #999;
+    }
+
+    .logo-card svg {
+      width: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-card:hover svg {
+      transform: scale(1.03);
+    }
+
+    /* Size Comparison */
+    .size-strip {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      padding: 2rem;
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .size-item {
+      text-align: center;
+    }
+
+    .size-item span {
+      display: block;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      font-family: monospace;
+    }
+
+    /* ============================================
+       LOCKUP (Icon + Wordmark)
+       ============================================ */
+    .lockup-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .lockup-card {
+      border-radius: 16px;
+      padding: 3rem 3.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .lockup-card.dark { background: var(--bg); }
+    .lockup-card.light { background: #fafafa; }
+
+    .lockup-card-label {
+      position: absolute;
+      top: 1rem;
+      left: 1.5rem;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .lockup-card.light .lockup-card-label { color: #999; }
+
+    .lockup-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .lockup-primary {
+      font-family: var(--font);
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: 0.06em;
+      line-height: 1.15;
+    }
+
+    .lockup-secondary {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: 0.85rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    .lockup-card.dark .lockup-primary {
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .lockup-card.dark .lockup-secondary { color: var(--text-muted); }
+
+    .lockup-card.light .lockup-primary { color: #0a0a0a; }
+    .lockup-card.light .lockup-secondary { color: #666; }
+
+    /* ============================================
+       TYPOGRAPHY
+       ============================================ */
+    .type-specimen {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .type-sample {
+      margin-bottom: 2rem;
+    }
+
+    .type-sample:last-child { margin-bottom: 0; }
+
+    .type-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .type-sample .display {
+      font-family: var(--font);
+      color: var(--white);
+    }
+
+    .type-weights {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+    }
+
+    .weight-item {
+      font-family: var(--font);
+      font-size: 1.75rem;
+      color: var(--white);
+    }
+
+    .weight-item span {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+       USAGE GUIDELINES
+       ============================================ */
+    .guidelines-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .guideline-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .guideline-card h4 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+    }
+
+    .guideline-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .guideline-card li {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      padding: 0.3rem 0;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .guideline-card li::before {
+      position: absolute;
+      left: 0;
+      font-size: 0.75rem;
+    }
+
+    .guideline-card.do li::before { content: "\2713"; color: #22c55e; }
+    .guideline-card.dont li::before { content: "\2717"; color: #ef4444; }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      padding: 3rem 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 640px) {
+      section { padding: 3rem 0; }
+      .container { padding: 0 1.25rem; }
+      .lockup-card { flex-direction: column; text-align: center; padding: 2.5rem 1.5rem; }
+      .lockup-primary { font-size: 1.5rem; }
+      .size-strip { gap: 1.5rem; justify-content: center; }
+    }
+
+    /* ============================================
+       ANIMATIONS (respects reduced motion)
+       ============================================ */
+    @media (prefers-reduced-motion: no-preference) {
+      .logo-card svg { transition: transform 0.3s ease; }
+      .swatch { transition: transform 0.2s ease; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       HERO
+       ========================================== -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-badge">Brand Identity Concepts</div>
+      <h1>Flashpoint Leads</h1>
+      <p>Three logo concepts for your SaaS platform — Black &amp; Gold, FP monogram, geometric precision.</p>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       COLOR SYSTEM
+       ========================================== -->
+  <section>
+    <div class="container">
+      <div class="section-label">Foundation</div>
+      <div class="section-title">Color System</div>
+      <div class="section-desc">A premium gold palette anchored by deep black. Each tone plays a specific role in the identity system.</div>
+
+      <div class="palette-grid">
+        <div class="swatch">
+          <div class="swatch-color" style="background: #D5B038;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Metallic Gold</div>
+            <div class="swatch-hex">#D5B038</div>
+            <div class="swatch-role">Primary &middot; Brand Mark</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #A57D02;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Deep Gold</div>
+            <div class="swatch-hex">#A57D02</div>
+            <div class="swatch-role">Depth &middot; Shadows</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #FFD86E;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Highlight Gold</div>
+            <div class="swatch-hex">#FFD86E</div>
+            <div class="swatch-role">Highlights &middot; Shine</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #CD9900;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Warm Gold</div>
+            <div class="swatch-hex">#CD9900</div>
+            <div class="swatch-role">Accent &middot; Secondary</div>
+          </div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #09090b;"></div>
+          <div class="swatch-info">
+            <div class="swatch-name">Obsidian</div>
+            <div class="swatch-hex">#09090B</div>
+            <div class="swatch-role">Background &middot; Primary</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       CONCEPT A: "UNIFIED"
+       ========================================== -->
+  <section>
+    <div class="container">
+      <!-- Reusable SVG Definitions -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden;">
+        <defs>
+          <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#A57D02"/>
+            <stop offset="30%" stop-color="#D5B038"/>
+            <stop offset="55%" stop-color="#FFD86E"/>
+            <stop offset="78%" stop-color="#D5B038"/>
+            <stop offset="100%" stop-color="#A57D02"/>
+          </linearGradient>
+          <linearGradient id="gold-gradient-h" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#A57D02"/>
+            <stop offset="35%" stop-color="#D5B038"/>
+            <stop offset="60%" stop-color="#FFD86E"/>
+            <stop offset="80%" stop-color="#D5B038"/>
+            <stop offset="100%" stop-color="#A57D02"/>
+          </linearGradient>
+        </defs>
+
+        <symbol id="fp-unified" viewBox="0 0 180 230">
+          <path fill-rule="evenodd" d="
+            M 0,0
+            L 125,0
+            C 200,0 200,105 125,105
+            L 32,105
+            L 32,120
+            L 115,120
+            L 115,150
+            L 32,150
+            L 32,230
+            L 0,230
+            Z
+            M 32,32
+            L 125,32
+            C 168,32 168,73 125,73
+            L 32,73
+            Z
+          "/>
+        </symbol>
+
+        <symbol id="fp-edge" viewBox="0 0 180 230">
+          <path fill-rule="evenodd" d="
+            M 0,0
+            L 160,0
+            L 160,105
+            L 32,105
+            L 32,120
+            L 115,120
+            L 115,150
+            L 32,150
+            L 32,230
+            L 0,230
+            Z
+            M 32,32
+            L 128,32
+            L 128,73
+            L 32,73
+            Z
+          "/>
+        </symbol>
+
+        <symbol id="fp-badge" viewBox="0 0 280 280">
+          <rect x="0" y="0" width="280" height="280" rx="52"/>
+        </symbol>
+        <symbol id="fp-badge-inner" viewBox="0 0 180 230">
+          <path fill-rule="evenodd" d="
+            M 0,0
+            L 125,0
+            C 200,0 200,105 125,105
+            L 32,105
+            L 32,120
+            L 115,120
+            L 115,150
+            L 32,150
+            L 32,230
+            L 0,230
+            Z
+            M 32,32
+            L 125,32
+            C 168,32 168,73 125,73
+            L 32,73
+            Z
+          "/>
+        </symbol>
+      </svg>
+
+      <div class="concept">
+        <div class="concept-header">
+          <span class="concept-number">Concept A</span>
+        </div>
+        <div class="concept-name" style="margin-bottom: 0.75rem;">Unified</div>
+        <div class="concept-rationale">
+          F and P share a single vertical stem. The P's bowl flows with a smooth, organic curve, while the F's crossbar anchors the form below. Classic and refined — this reads "established" and "trustworthy."
+        </div>
+
+        <div class="logo-showcase">
+          <!-- Gold gradient on dark -->
+          <div class="logo-card dark">
+            <span class="logo-card-label">Gold on Dark</span>
+            <svg width="120" height="163" aria-label="Flashpoint Leads FP monogram">
+              <use href="#fp-unified" fill="url(#gold-gradient)"/>
+            </svg>
+          </div>
+
+          <!-- Flat gold on dark -->
+          <div class="logo-card surface">
+            <span class="logo-card-label">Flat Gold</span>
+            <svg width="120" height="163" aria-label="Flashpoint Leads FP monogram">
+              <use href="#fp-unified" fill="#D5B038"/>
+            </svg>
+          </div>
+
+          <!-- Black on light -->
+          <div class="logo-card light">
+            <span class="logo-card-label">Black on White</span>
+            <svg width="120" height="163" aria-label="Flashpoint Leads FP monogram">
+              <use href="#fp-unified" fill="#0a0a0a"/>
+            </svg>
+          </div>
+
+          <!-- White on dark -->
+          <div class="logo-card dark">
+            <span class="logo-card-label">White on Dark</span>
+            <svg width="120" height="163" aria-label="Flashpoint Leads FP monogram">
+              <use href="#fp-unified" fill="#fafafa"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Size comparison -->
+        <div class="size-strip">
+          <div class="size-item">
+            <svg width="80" height="109" aria-hidden="true"><use href="#fp-unified" fill="url(#gold-gradient)"/></svg>
+            <span>80px</span>
+          </div>
+          <div class="size-item">
+            <svg width="56" height="76" aria-hidden="true"><use href="#fp-unified" fill="url(#gold-gradient)"/></svg>
+            <span>56px</span>
+          </div>
+          <div class="size-item">
+            <svg width="40" height="54" aria-hidden="true"><use href="#fp-unified" fill="url(#gold-gradient)"/></svg>
+            <span>40px</span>
+          </div>
+          <div class="size-item">
+            <svg width="28" height="38" aria-hidden="true"><use href="#fp-unified" fill="url(#gold-gradient)"/></svg>
+            <span>28px</span>
+          </div>
+          <div class="size-item">
+            <svg width="16" height="22" aria-hidden="true"><use href="#fp-unified" fill="url(#gold-gradient)"/></svg>
+            <span>16px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           CONCEPT B: "EDGE"
+           ========================================== -->
+      <div class="concept" style="border-top: 1px solid var(--border); padding-top: 4rem;">
+        <div class="concept-header">
+          <span class="concept-number">Concept B</span>
+        </div>
+        <div class="concept-name" style="margin-bottom: 0.75rem;">Edge</div>
+        <div class="concept-rationale">
+          Pure geometry — every angle is 90 degrees. The squared-off P bowl signals precision and technology. Sharper, more digital, and unmistakably "tech company." For a SaaS platform that means business.
+        </div>
+
+        <div class="logo-showcase">
+          <div class="logo-card dark">
+            <span class="logo-card-label">Gold on Dark</span>
+            <svg width="120" height="163" aria-label="Flashpoint Leads FP monogram">
+              <use href="#fp-edge" fill="url(#gold-gradient)"/>
+            </svg>
+          </div>
+
+          <div class="logo-card surface">
+            <span class="logo-card-label">Flat Gold</span>
+            <svg width="120" height="163" aria-label="Flashpoint Leads FP monogram">
+              <use href="#fp-edge" fill="#D5B038"/>
+            </svg>
+          </div>
+
+          <div class="logo-card light">
+            <span class="logo-card-label">Black on White</span>
+            <svg width="120" height="163" aria-label="Flashpoint Leads FP monogram">
+              <use href="#fp-edge" fill="#0a0a0a"/>
+            </svg>
+          </div>
+
+          <div class="logo-card dark">
+            <span class="logo-card-label">White on Dark</span>
+            <svg width="120" height="163" aria-label="Flashpoint Leads FP monogram">
+              <use href="#fp-edge" fill="#fafafa"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="size-strip">
+          <div class="size-item">
+            <svg width="80" height="109" aria-hidden="true"><use href="#fp-edge" fill="url(#gold-gradient)"/></svg>
+            <span>80px</span>
+          </div>
+          <div class="size-item">
+            <svg width="56" height="76" aria-hidden="true"><use href="#fp-edge" fill="url(#gold-gradient)"/></svg>
+            <span>56px</span>
+          </div>
+          <div class="size-item">
+            <svg width="40" height="54" aria-hidden="true"><use href="#fp-edge" fill="url(#gold-gradient)"/></svg>
+            <span>40px</span>
+          </div>
+          <div class="size-item">
+            <svg width="28" height="38" aria-hidden="true"><use href="#fp-edge" fill="url(#gold-gradient)"/></svg>
+            <span>28px</span>
+          </div>
+          <div class="size-item">
+            <svg width="16" height="22" aria-hidden="true"><use href="#fp-edge" fill="url(#gold-gradient)"/></svg>
+            <span>16px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           CONCEPT C: "BADGE"
+           ========================================== -->
+      <div class="concept" style="border-top: 1px solid var(--border); padding-top: 4rem;">
+        <div class="concept-header">
+          <span class="concept-number">Concept C</span>
+        </div>
+        <div class="concept-name" style="margin-bottom: 0.75rem;">Badge</div>
+        <div class="concept-rationale">
+          The FP monogram contained inside a premium rounded square. Works perfectly as a favicon, app icon, or social avatar. The container adds presence and makes the mark instantly recognizable at any size.
+        </div>
+
+        <div class="logo-showcase">
+          <!-- Gold container, dark FP -->
+          <div class="logo-card dark">
+            <span class="logo-card-label">Gold Badge</span>
+            <svg width="140" height="140" viewBox="0 0 280 280" aria-label="Flashpoint Leads FP badge">
+              <rect x="0" y="0" width="280" height="280" rx="52" fill="url(#gold-gradient)"/>
+              <svg x="62" y="32" width="156" height="216" viewBox="0 0 180 230">
+                <path fill-rule="evenodd" fill="#09090b" d="
+                  M 0,0 L 125,0 C 200,0 200,105 125,105 L 32,105 L 32,120 L 115,120 L 115,150 L 32,150 L 32,230 L 0,230 Z
+                  M 32,32 L 125,32 C 168,32 168,73 125,73 L 32,73 Z
+                "/>
+              </svg>
+            </svg>
+          </div>
+
+          <div class="logo-card surface">
+            <span class="logo-card-label">Dark Badge</span>
+            <svg width="140" height="140" viewBox="0 0 280 280" aria-label="Flashpoint Leads FP badge">
+              <rect x="0" y="0" width="280" height="280" rx="52" fill="#0a0a0a" stroke="#D5B038" stroke-width="3"/>
+              <svg x="58" y="30" width="164" height="220" viewBox="0 0 180 230">
+                <path fill-rule="evenodd" fill="url(#gold-gradient)" d="
+                  M 0,0 L 125,0 C 200,0 200,105 125,105 L 32,105 L 32,120 L 115,120 L 115,150 L 32,150 L 32,230 L 0,230 Z
+                  M 32,32 L 125,32 C 168,32 168,73 125,73 L 32,73 Z
+                "/>
+              </svg>
+            </svg>
+          </div>
+
+          <div class="logo-card light">
+            <span class="logo-card-label">Black Badge</span>
+            <svg width="140" height="140" viewBox="0 0 280 280" aria-label="Flashpoint Leads FP badge">
+              <rect x="0" y="0" width="280" height="280" rx="52" fill="#0a0a0a"/>
+              <svg x="58" y="30" width="164" height="220" viewBox="0 0 180 230">
+                <path fill-rule="evenodd" fill="#fafafa" d="
+                  M 0,0 L 125,0 C 200,0 200,105 125,105 L 32,105 L 32,120 L 115,120 L 115,150 L 32,150 L 32,230 L 0,230 Z
+                  M 32,32 L 125,32 C 168,32 168,73 125,73 L 32,73 Z
+                "/>
+              </svg>
+            </svg>
+          </div>
+
+          <div class="logo-card dark">
+            <span class="logo-card-label">White Badge</span>
+            <svg width="140" height="140" viewBox="0 0 280 280" aria-label="Flashpoint Leads FP badge">
+              <rect x="0" y="0" width="280" height="280" rx="52" fill="#fafafa"/>
+              <svg x="58" y="30" width="164" height="220" viewBox="0 0 180 230">
+                <path fill-rule="evenodd" fill="#0a0a0a" d="
+                  M 0,0 L 125,0 C 200,0 200,105 125,105 L 32,105 L 32,120 L 115,120 L 115,150 L 32,150 L 32,230 L 0,230 Z
+                  M 32,32 L 125,32 C 168,32 168,73 125,73 L 32,73 Z
+                "/>
+              </svg>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Badge sizes -->
+        <div class="size-strip">
+          <div class="size-item">
+            <svg width="80" height="80" viewBox="0 0 280 280" aria-hidden="true">
+              <rect width="280" height="280" rx="52" fill="url(#gold-gradient)"/>
+              <svg x="58" y="30" width="164" height="220" viewBox="0 0 180 230">
+                <path fill-rule="evenodd" fill="#09090b" d="M 0,0 L 125,0 C 200,0 200,105 125,105 L 32,105 L 32,120 L 115,120 L 115,150 L 32,150 L 32,230 L 0,230 Z M 32,32 L 125,32 C 168,32 168,73 125,73 L 32,73 Z"/>
+              </svg>
+            </svg>
+            <span>80px</span>
+          </div>
+          <div class="size-item">
+            <svg width="56" height="56" viewBox="0 0 280 280" aria-hidden="true">
+              <rect width="280" height="280" rx="52" fill="url(#gold-gradient)"/>
+              <svg x="58" y="30" width="164" height="220" viewBox="0 0 180 230">
+                <path fill-rule="evenodd" fill="#09090b" d="M 0,0 L 125,0 C 200,0 200,105 125,105 L 32,105 L 32,120 L 115,120 L 115,150 L 32,150 L 32,230 L 0,230 Z M 32,32 L 125,32 C 168,32 168,73 125,73 L 32,73 Z"/>
+              </svg>
+            </svg>
+            <span>56px</span>
+          </div>
+          <div class="size-item">
+            <svg width="40" height="40" viewBox="0 0 280 280" aria-hidden="true">
+              <rect width="280" height="280" rx="52" fill="url(#gold-gradient)"/>
+              <svg x="58" y="30" width="164" height="220" viewBox="0 0 180 230">
+                <path fill-rule="evenodd" fill="#09090b" d="M 0,0 L 125,0 C 200,0 200,105 125,105 L 32,105 L 32,120 L 115,120 L 115,150 L 32,150 L 32,230 L 0,230 Z M 32,32 L 125,32 C 168,32 168,73 125,73 L 32,73 Z"/>
+              </svg>
+            </svg>
+            <span>40px</span>
+          </div>
+          <div class="size-item">
+            <svg width="28" height="28" viewBox="0 0 280 280" aria-hidden="true">
+              <rect width="280" height="280" rx="52" fill="url(#gold-gradient)"/>
+              <svg x="58" y="30" width="164" height="220" viewBox="0 0 180 230">
+                <path fill-rule="evenodd" fill="#09090b" d="M 0,0 L 125,0 C 200,0 200,105 125,105 L 32,105 L 32,120 L 115,120 L 115,150 L 32,150 L 32,230 L 0,230 Z M 32,32 L 125,32 C 168,32 168,73 125,73 L 32,73 Z"/>
+              </svg>
+            </svg>
+            <span>28px</span>
+          </div>
+          <div class="size-item">
+            <svg width="16" height="16" viewBox="0 0 280 280" aria-hidden="true">
+              <rect width="280" height="280" rx="52" fill="url(#gold-gradient)"/>
+              <svg x="58" y="30" width="164" height="220" viewBox="0 0 180 230">
+                <path fill-rule="evenodd" fill="#09090b" d="M 0,0 L 125,0 C 200,0 200,105 125,105 L 32,105 L 32,120 L 115,120 L 115,150 L 32,150 L 32,230 L 0,230 Z M 32,32 L 125,32 C 168,32 168,73 125,73 L 32,73 Z"/>
+              </svg>
+            </svg>
+            <span>16px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       LOCKUPS
+       ========================================== -->
+  <section>
+    <div class="container">
+      <div class="section-label">Brand Lockup</div>
+      <div class="section-title">Icon + Wordmark</div>
+      <div class="section-desc">The full logo combining the FP monogram with the Flashpoint Leads wordmark. Shown with both concept A (Unified) and concept B (Edge).</div>
+
+      <div class="lockup-grid">
+        <!-- Unified lockup — dark -->
+        <div class="lockup-card dark">
+          <span class="lockup-card-label">Unified &middot; Dark</span>
+          <svg width="64" height="87" aria-hidden="true">
+            <use href="#fp-unified" fill="url(#gold-gradient)"/>
+          </svg>
+          <div class="lockup-text">
+            <span class="lockup-primary">FLASHPOINT</span>
+            <span class="lockup-secondary" style="color: var(--text-muted);">LEADS</span>
+          </div>
+        </div>
+
+        <!-- Unified lockup — light -->
+        <div class="lockup-card light">
+          <span class="lockup-card-label">Unified &middot; Light</span>
+          <svg width="64" height="87" aria-hidden="true">
+            <use href="#fp-unified" fill="#0a0a0a"/>
+          </svg>
+          <div class="lockup-text">
+            <span class="lockup-primary">FLASHPOINT</span>
+            <span class="lockup-secondary">LEADS</span>
+          </div>
+        </div>
+
+        <!-- Edge lockup — dark -->
+        <div class="lockup-card dark">
+          <span class="lockup-card-label">Edge &middot; Dark</span>
+          <svg width="64" height="87" aria-hidden="true">
+            <use href="#fp-edge" fill="url(#gold-gradient)"/>
+          </svg>
+          <div class="lockup-text">
+            <span class="lockup-primary">FLASHPOINT</span>
+            <span class="lockup-secondary" style="color: var(--text-muted);">LEADS</span>
+          </div>
+        </div>
+
+        <!-- Edge lockup — light -->
+        <div class="lockup-card light">
+          <span class="lockup-card-label">Edge &middot; Light</span>
+          <svg width="64" height="87" aria-hidden="true">
+            <use href="#fp-edge" fill="#0a0a0a"/>
+          </svg>
+          <div class="lockup-text">
+            <span class="lockup-primary">FLASHPOINT</span>
+            <span class="lockup-secondary">LEADS</span>
+          </div>
+        </div>
+
+        <!-- Badge lockup — dark -->
+        <div class="lockup-card dark">
+          <span class="lockup-card-label">Badge &middot; Dark</span>
+          <svg width="68" height="68" viewBox="0 0 280 280" aria-hidden="true">
+            <rect width="280" height="280" rx="52" fill="url(#gold-gradient)"/>
+            <svg x="58" y="30" width="164" height="220" viewBox="0 0 180 230">
+              <path fill-rule="evenodd" fill="#09090b" d="M 0,0 L 125,0 C 200,0 200,105 125,105 L 32,105 L 32,120 L 115,120 L 115,150 L 32,150 L 32,230 L 0,230 Z M 32,32 L 125,32 C 168,32 168,73 125,73 L 32,73 Z"/>
+            </svg>
+          </svg>
+          <div class="lockup-text">
+            <span class="lockup-primary">FLASHPOINT</span>
+            <span class="lockup-secondary" style="color: var(--text-muted);">LEADS</span>
+          </div>
+        </div>
+
+        <div class="lockup-card light">
+          <span class="lockup-card-label">Badge &middot; Light</span>
+          <svg width="68" height="68" viewBox="0 0 280 280" aria-hidden="true">
+            <rect width="280" height="280" rx="52" fill="#0a0a0a"/>
+            <svg x="58" y="30" width="164" height="220" viewBox="0 0 180 230">
+              <path fill-rule="evenodd" fill="#fafafa" d="M 0,0 L 125,0 C 200,0 200,105 125,105 L 32,105 L 32,120 L 115,120 L 115,150 L 32,150 L 32,230 L 0,230 Z M 32,32 L 125,32 C 168,32 168,73 125,73 L 32,73 Z"/>
+            </svg>
+          </svg>
+          <div class="lockup-text">
+            <span class="lockup-primary">FLASHPOINT</span>
+            <span class="lockup-secondary">LEADS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TYPOGRAPHY
+       ========================================== -->
+  <section>
+    <div class="container">
+      <div class="section-label">Typography</div>
+      <div class="section-title">Space Grotesk</div>
+      <div class="section-desc">A geometric sans-serif with a techy edge. Distinctive character without sacrificing readability. Open-source via Google Fonts.</div>
+
+      <div class="type-specimen">
+        <div class="type-sample">
+          <div class="type-label">Wordmark &middot; 700</div>
+          <div class="display" style="font-size: 3rem; font-weight: 700; letter-spacing: 0.06em; background: linear-gradient(135deg, #A57D02, #D5B038, #FFD86E, #D5B038); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+            FLASHPOINT LEADS
+          </div>
+        </div>
+
+        <div class="type-sample">
+          <div class="type-label">Heading &middot; 600</div>
+          <div class="display" style="font-size: 1.5rem; font-weight: 600;">
+            Transform Your Lead Generation Pipeline
+          </div>
+        </div>
+
+        <div class="type-sample">
+          <div class="type-label">Body &middot; 400</div>
+          <div class="display" style="font-size: 1rem; font-weight: 400; color: var(--text); max-width: 560px;">
+            Flashpoint Leads helps SaaS companies identify, qualify, and convert high-intent prospects through intelligent automation and real-time data enrichment.
+          </div>
+        </div>
+
+        <div class="type-sample">
+          <div class="type-label">Weight Range</div>
+          <div class="type-weights">
+            <div class="weight-item" style="font-weight: 300;">Aa <span>Light 300</span></div>
+            <div class="weight-item" style="font-weight: 400;">Aa <span>Regular 400</span></div>
+            <div class="weight-item" style="font-weight: 500;">Aa <span>Medium 500</span></div>
+            <div class="weight-item" style="font-weight: 600;">Aa <span>SemiBold 600</span></div>
+            <div class="weight-item" style="font-weight: 700;">Aa <span>Bold 700</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 1rem; padding: 1rem 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-family: monospace; font-size: 0.8rem; color: var(--text-muted);">
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap');
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       USAGE GUIDELINES
+       ========================================== -->
+  <section>
+    <div class="container">
+      <div class="section-label">Guidelines</div>
+      <div class="section-title">Usage Rules</div>
+      <div class="section-desc">Keep the mark consistent across every touchpoint.</div>
+
+      <div class="guidelines-grid">
+        <div class="guideline-card do">
+          <h4>Do</h4>
+          <ul>
+            <li>Use the gold gradient version on dark backgrounds as the primary treatment</li>
+            <li>Maintain clear space equal to the F crossbar height around the mark</li>
+            <li>Use the Badge version for app icons, favicons, and social avatars</li>
+            <li>Use flat black or white versions for single-color applications</li>
+            <li>Scale proportionally — never stretch or compress</li>
+          </ul>
+        </div>
+
+        <div class="guideline-card dont">
+          <h4>Don't</h4>
+          <ul>
+            <li>Place the gold version on light/white backgrounds (low contrast)</li>
+            <li>Add drop shadows, outer glows, or bevel effects</li>
+            <li>Rotate, skew, or apply perspective transforms</li>
+            <li>Change the gold palette tones to other hues</li>
+            <li>Use below 16px — switch to the Badge version for tiny sizes</li>
+            <li>Place on busy photography without a dark overlay</li>
+          </ul>
+        </div>
+
+        <div class="guideline-card do">
+          <h4>File Formats</h4>
+          <ul>
+            <li>SVG — Primary format for web and digital (scalable)</li>
+            <li>PNG @2x — For contexts where SVG isn't supported</li>
+            <li>Favicon — Use Badge concept at 32x32 and 16x16</li>
+            <li>Print — Export SVG at 300dpi minimum, CMYK if offset printing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       STANDALONE SVG EXPORTS
+       ========================================== -->
+  <section>
+    <div class="container">
+      <div class="section-label">Export Ready</div>
+      <div class="section-title">Standalone SVG Code</div>
+      <div class="section-desc">Copy these self-contained SVG blocks directly into your codebase. Each includes its own gradient definition.</div>
+
+      <div style="margin-bottom: 2rem;">
+        <div class="type-label" style="margin-bottom: 0.75rem;">Concept A &middot; Unified (Standalone SVG)</div>
+        <pre style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; overflow-x: auto; font-size: 0.75rem; color: var(--text-muted); line-height: 1.7;"><code>&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 230" width="180" height="230"&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id="fp-gold" x1="0%" y1="0%" x2="100%" y2="100%"&gt;
+      &lt;stop offset="0%" stop-color="#A57D02"/&gt;
+      &lt;stop offset="30%" stop-color="#D5B038"/&gt;
+      &lt;stop offset="55%" stop-color="#FFD86E"/&gt;
+      &lt;stop offset="78%" stop-color="#D5B038"/&gt;
+      &lt;stop offset="100%" stop-color="#A57D02"/&gt;
+    &lt;/linearGradient&gt;
+  &lt;/defs&gt;
+  &lt;path fill-rule="evenodd" fill="url(#fp-gold)" d="
+    M 0,0 L 125,0 C 200,0 200,105 125,105
+    L 32,105 L 32,120 L 115,120 L 115,150
+    L 32,150 L 32,230 L 0,230 Z
+    M 32,32 L 125,32 C 168,32 168,73 125,73
+    L 32,73 Z
+  "/&gt;
+&lt;/svg&gt;</code></pre>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <div class="type-label" style="margin-bottom: 0.75rem;">Concept B &middot; Edge (Standalone SVG)</div>
+        <pre style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; overflow-x: auto; font-size: 0.75rem; color: var(--text-muted); line-height: 1.7;"><code>&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 230" width="180" height="230"&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id="fp-gold" x1="0%" y1="0%" x2="100%" y2="100%"&gt;
+      &lt;stop offset="0%" stop-color="#A57D02"/&gt;
+      &lt;stop offset="30%" stop-color="#D5B038"/&gt;
+      &lt;stop offset="55%" stop-color="#FFD86E"/&gt;
+      &lt;stop offset="78%" stop-color="#D5B038"/&gt;
+      &lt;stop offset="100%" stop-color="#A57D02"/&gt;
+    &lt;/linearGradient&gt;
+  &lt;/defs&gt;
+  &lt;path fill-rule="evenodd" fill="url(#fp-gold)" d="
+    M 0,0 L 160,0 L 160,105 L 32,105
+    L 32,120 L 115,120 L 115,150
+    L 32,150 L 32,230 L 0,230 Z
+    M 32,32 L 128,32 L 128,73
+    L 32,73 Z
+  "/&gt;
+&lt;/svg&gt;</code></pre>
+      </div>
+
+      <div>
+        <div class="type-label" style="margin-bottom: 0.75rem;">Concept C &middot; Badge (Standalone SVG)</div>
+        <pre style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; overflow-x: auto; font-size: 0.75rem; color: var(--text-muted); line-height: 1.7;"><code>&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" width="280" height="280"&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id="fp-gold" x1="0%" y1="0%" x2="100%" y2="100%"&gt;
+      &lt;stop offset="0%" stop-color="#A57D02"/&gt;
+      &lt;stop offset="30%" stop-color="#D5B038"/&gt;
+      &lt;stop offset="55%" stop-color="#FFD86E"/&gt;
+      &lt;stop offset="78%" stop-color="#D5B038"/&gt;
+      &lt;stop offset="100%" stop-color="#A57D02"/&gt;
+    &lt;/linearGradient&gt;
+  &lt;/defs&gt;
+  &lt;rect width="280" height="280" rx="52" fill="url(#fp-gold)"/&gt;
+  &lt;path fill-rule="evenodd" fill="#09090b" transform="translate(58,30) scale(0.91)" d="
+    M 0,0 L 125,0 C 200,0 200,105 125,105
+    L 32,105 L 32,120 L 115,120 L 115,150
+    L 32,150 L 32,230 L 0,230 Z
+    M 32,32 L 125,32 C 168,32 168,73 125,73
+    L 32,73 Z
+  "/&gt;
+&lt;/svg&gt;</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer>
+    <div class="container">
+      Flashpoint Leads LLC &mdash; Brand Identity Concepts &mdash; 2026
+    </div>
+  </footer>
+
+</body>
+</html>

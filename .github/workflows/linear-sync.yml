@@ -1,0 +1,136 @@
+name: Linear Sync
+
+on:
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled, assigned, unassigned]
+  issue_comment:
+    types: [created, edited, deleted]
+  pull_request:
+    types: [opened, edited, closed, synchronize, labeled, unlabeled]
+  pull_request_review:
+    types: [submitted]
+  schedule:
+    - cron: '*/15 * * * *'   # Incremental sync every 15 minutes
+  workflow_dispatch:
+    inputs:
+      sync_type:
+        description: 'Type of sync to perform'
+        required: true
+        default: 'incremental'
+        type: choice
+        options:
+          - incremental
+          - full
+          - repair
+
+env:
+  LINEAR_API_URL: https://api.linear.app/graphql
+  SYNC_CONFIG: sync-config.yml
+
+jobs:
+  # ─────────────────────────────────────────────
+  # Handle real-time events (issues / PRs)
+  # ─────────────────────────────────────────────
+  sync-event:
+    name: Sync Event to Linear
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install sync dependencies
+        run: pip install requests pyyaml
+
+      - name: Sync event to Linear
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINEAR_TEAM_ID: ${{ secrets.LINEAR_TEAM_ID }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTION: ${{ github.event.action }}
+          ISSUE_NUMBER: ${{ github.event.issue.number || github.event.pull_request.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title || github.event.pull_request.title }}
+          ISSUE_BODY: ${{ github.event.issue.body || github.event.pull_request.body }}
+          ISSUE_STATE: ${{ github.event.issue.state || github.event.pull_request.state }}
+          ISSUE_URL: ${{ github.event.issue.html_url || github.event.pull_request.html_url }}
+          ISSUE_LABELS: ${{ toJSON(github.event.issue.labels || github.event.pull_request.labels) }}
+          ISSUE_ASSIGNEE: ${{ github.event.issue.assignee.login || github.event.pull_request.assignee.login }}
+          REPO_NAME: ${{ github.repository }}
+        run: python scripts/sync-to-linear.py
+
+      - name: Upload sync log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sync-log-${{ github.run_id }}
+          path: sync-report.json
+          retention-days: 7
+
+  # ─────────────────────────────────────────────
+  # Scheduled / manual incremental or full sync
+  # ─────────────────────────────────────────────
+  sync-scheduled:
+    name: Scheduled Sync
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install sync dependencies
+        run: pip install requests pyyaml
+
+      - name: Determine sync type
+        id: sync-type
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "type=${{ inputs.sync_type }}" >> $GITHUB_OUTPUT
+          else
+            echo "type=incremental" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run scheduled sync
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINEAR_TEAM_ID: ${{ secrets.LINEAR_TEAM_ID }}
+          REPO_NAME: ${{ github.repository }}
+          SYNC_TYPE: ${{ steps.sync-type.outputs.type }}
+        run: python scripts/sync-scheduled.py
+
+      - name: Upload sync report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scheduled-sync-report-${{ github.run_id }}
+          path: sync-report.json
+          retention-days: 14
+
+  # ─────────────────────────────────────────────
+  # Health check (runs after every sync)
+  # ─────────────────────────────────────────────
+  health-check:
+    name: Sync Health Check
+    runs-on: ubuntu-latest
+    needs: [sync-event, sync-scheduled]
+    if: always() && (needs.sync-event.result == 'failure' || needs.sync-scheduled.result == 'failure')
+
+    steps:
+      - name: Alert on sync failure
+        run: |
+          echo "::error::Linear sync failed! Check sync-report artifact for details."
+          echo "Event: ${{ github.event_name }}"
+          echo "Run: ${{ github.run_id }}"
+          echo "Repo: ${{ github.repository }}"
+          exit 1
