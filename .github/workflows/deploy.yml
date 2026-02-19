@@ -31,6 +31,10 @@ jobs:
         working-directory: aaa-platform/control-plane
         run: npm ci
 
+      - name: Install deps
+        working-directory:  aaa-platform/control-plane
+        run: npm install
+
       - name: Generate Prisma Client
         working-directory: aaa-platform/control-plane
         run: npx prisma generate
@@ -43,7 +47,7 @@ jobs:
         working-directory: aaa-platform/control-plane
         run: npm run build
         env:
-          SKIP_ENV_VALIDATION: true
+          SKIP_ENV_VALIDATION: false
 
   # Test GenAI Core
   test-genai-core:
@@ -71,7 +75,7 @@ jobs:
         working-directory: aaa-platform/genai-core
         run: pytest tests/ -v --tb=short
         env:
-          USE_MOCK_LLM: 'true'
+          USE_MOCK_LLM: 'false'
 
   # Deploy to Railway
   deploy-railway:
