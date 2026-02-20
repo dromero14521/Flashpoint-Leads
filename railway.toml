@@ -1,17 +1,6 @@
 # Railway Deployment Configuration
 # https://docs.railway.app/deploy/config-as-code
 
-[build]
-builder = "NIXPACKS"
-buildCommand = "echo 'Building AAA Platform...'"
-
-[deploy]
-startCommand = "echo 'Use service-specific start commands'"
-healthcheckPath = "/api/health"
-healthcheckTimeout = 100
-restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 10
-
 # Control Plane Service
 [[services]]
 name = "control-plane"
