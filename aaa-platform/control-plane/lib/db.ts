@@ -76,7 +76,7 @@ export const tenantDb = {
       });
     },
 
-    async create(args: Prisma.BlueprintCreateArgs) {
+    async create(args: Omit<Prisma.BlueprintCreateArgs, "data"> & { data: Omit<Prisma.BlueprintUncheckedCreateInput, "tenantId"> }) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.blueprint.create({
         ...args,
@@ -144,7 +144,7 @@ export const tenantDb = {
       });
     },
 
-    async create(args: Prisma.UsageEventCreateArgs) {
+    async create(args: Omit<Prisma.UsageEventCreateArgs, "data"> & { data: Omit<Prisma.UsageEventUncheckedCreateInput, "tenantId"> }) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.usageEvent.create({
         ...args,
@@ -182,7 +182,7 @@ export const tenantDb = {
       });
     },
 
-    async create(args: Prisma.SubscriptionHistoryCreateArgs) {
+    async create(args: Omit<Prisma.SubscriptionHistoryCreateArgs, "data"> & { data: Omit<Prisma.SubscriptionHistoryUncheckedCreateInput, "tenantId"> }) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.subscriptionHistory.create({
         ...args,
@@ -210,7 +210,7 @@ export const tenantDb = {
       return result;
     },
 
-    async create(args: Prisma.UserSettingsCreateArgs) {
+    async create(args: Omit<Prisma.UserSettingsCreateArgs, "data"> & { data: Omit<Prisma.UserSettingsUncheckedCreateInput, "tenantId"> }) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.userSettings.create({
         ...args,
