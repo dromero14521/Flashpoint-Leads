@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { getUserTier, getUserTenantId } from "@/lib/clerk";
+import { getUserTier } from "@/lib/clerk";
 import { withUsageGate } from "@/lib/feature-gate";
 import { tenantDb } from "@/lib/db";
 
@@ -31,10 +31,7 @@ export async function POST(req: NextRequest) {
       }
 
       // Get user context
-      const [tier, tenantId] = await Promise.all([
-        getUserTier(userId),
-        getUserTenantId(userId)
-      ]);
+      const tier = await getUserTier(userId);
 
       // Parse request body
       const body: BlueprintRequestBody = await req.json();
@@ -105,11 +102,12 @@ export async function POST(req: NextRequest) {
         validation: result.validation,
       }, { status: 201 });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Blueprint generation error:", error);
+      const err = error as { code?: string; message?: string };
 
       // Check if it's a network error
-      if (error.code === "ECONNREFUSED") {
+      if (err.code === "ECONNREFUSED") {
         return NextResponse.json(
           {
             error: "GenAI Core is not available. Please ensure the service is running.",
@@ -122,7 +120,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error: "Failed to generate blueprint",
-          detail: error.message
+          detail: err.message
         },
         { status: 500 }
       );
@@ -133,7 +131,7 @@ export async function POST(req: NextRequest) {
 /**
  * Get supported output formats
  */
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const genaiCoreUrl = process.env.GENAI_CORE_URL || "http://localhost:8000";
     const response = await fetch(`${genaiCoreUrl}/formats`);
@@ -145,7 +143,7 @@ export async function GET(req: NextRequest) {
     const formats = await response.json();
     return NextResponse.json(formats);
 
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       {
         error: "Failed to fetch supported formats",

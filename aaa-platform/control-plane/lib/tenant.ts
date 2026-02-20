@@ -14,6 +14,11 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
+declare global {
+  // eslint-disable-next-line no-var
+  var __TEST_TENANT_ID__: string | undefined;
+}
+
 /**
  * Get the current tenant ID from the authenticated session
  *
@@ -124,7 +129,7 @@ export function getTenantIdFromHeaders(headers: Headers): string | null {
  * });
  * ```
  */
-export function withTenantFilter<T extends Record<string, any>>(
+export function withTenantFilter<T extends Record<string, unknown>>(
   where: T,
   tenantId: string
 ): T & { tenantId: string } {
@@ -150,7 +155,7 @@ export function withTenantFilter<T extends Record<string, any>>(
  * });
  * ```
  */
-export function withTenantData<T extends Record<string, any>>(
+export function withTenantData<T extends Record<string, unknown>>(
   data: T,
   tenantId: string
 ): T & { tenantId: string } {
@@ -173,7 +178,7 @@ export function setTenantIdForTesting(tenantId: string): void {
   }
 
   // Store in global context for testing
-  (global as any).__TEST_TENANT_ID__ = tenantId;
+  global.__TEST_TENANT_ID__ = tenantId;
 }
 
 /**
@@ -184,5 +189,5 @@ export function getTestTenantId(): string | null {
     return null;
   }
 
-  return (global as any).__TEST_TENANT_ID__ || null;
+  return global.__TEST_TENANT_ID__ || null;
 }

@@ -11,6 +11,7 @@ import {
   getTierDisplayName,
   FeatureLockedError,
   TierFeatures,
+  UsageLimitError,
 } from "./features";
 import { requireUsageLimit, trackUsage, UsageAction } from "./usage-tracker";
 
@@ -68,7 +69,7 @@ export async function requireUsage(action: UsageAction): Promise<void> {
  */
 export async function recordUsage(
   action: UsageAction,
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 ): Promise<void> {
   const { userId } = await auth();
 
@@ -93,7 +94,7 @@ export async function recordUsage(
  */
 export async function checkAndRecordUsage(
   action: UsageAction,
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 ): Promise<void> {
   await requireUsage(action); // Check limit first
   await recordUsage(action, metadata); // Track usage after success
@@ -164,8 +165,8 @@ export async function withUsageGate(
     await recordUsage(action);
 
     return response;
-  } catch (error: any) {
-    if (error.name === "UsageLimitError") {
+  } catch (error: unknown) {
+    if (error instanceof UsageLimitError) {
       return Response.json(
         {
           error: error.message,
@@ -204,7 +205,7 @@ export async function withGate(
     await recordUsage(action);
 
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (error instanceof FeatureLockedError) {
       return Response.json(
         {
@@ -217,7 +218,7 @@ export async function withGate(
       );
     }
 
-    if (error.name === "UsageLimitError") {
+    if (error instanceof UsageLimitError) {
       return Response.json(
         {
           error: error.message,

@@ -28,14 +28,15 @@ export async function GET() {
       },
       { status: isHealthy ? 200 : 503 }
     );
-  } catch (error: any) {
-    console.error("Health check failed:", error);
-    
+  } catch (error: unknown) {
+    const err = error instanceof Error ? error : new Error(String(error));
+    console.error("Health check failed:", err);
+
     return NextResponse.json(
       {
         status: "unhealthy",
         timestamp: new Date().toISOString(),
-        error: error.message,
+        error: err.message,
       },
       { status: 503 }
     );

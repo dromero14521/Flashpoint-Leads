@@ -5,7 +5,7 @@
  * All queries are automatically filtered by the current tenant's context.
  */
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { getTenantId, getTestTenantId } from "./tenant";
 
 // Prisma Client singleton
@@ -42,7 +42,7 @@ export const tenantDb = {
    * Blueprint operations with automatic tenant filtering
    */
   blueprint: {
-    async findMany(args?: any) {
+    async findMany(args?: Prisma.BlueprintFindManyArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.blueprint.findMany({
         ...args,
@@ -53,7 +53,7 @@ export const tenantDb = {
       });
     },
 
-    async findUnique(args: any) {
+    async findUnique(args: Prisma.BlueprintFindUniqueArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       const result = await prisma.blueprint.findUnique(args);
 
@@ -65,7 +65,7 @@ export const tenantDb = {
       return result;
     },
 
-    async findFirst(args?: any) {
+    async findFirst(args?: Prisma.BlueprintFindFirstArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.blueprint.findFirst({
         ...args,
@@ -76,7 +76,7 @@ export const tenantDb = {
       });
     },
 
-    async create(args: any) {
+    async create(args: Prisma.BlueprintCreateArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.blueprint.create({
         ...args,
@@ -87,7 +87,7 @@ export const tenantDb = {
       });
     },
 
-    async update(args: any) {
+    async update(args: Prisma.BlueprintUpdateArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
 
       // First verify tenant access
@@ -102,7 +102,7 @@ export const tenantDb = {
       return prisma.blueprint.update(args);
     },
 
-    async delete(args: any) {
+    async delete(args: Prisma.BlueprintDeleteArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
 
       // First verify tenant access
@@ -117,7 +117,7 @@ export const tenantDb = {
       return prisma.blueprint.delete(args);
     },
 
-    async count(args?: any) {
+    async count(args?: Prisma.BlueprintCountArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.blueprint.count({
         ...args,
@@ -133,7 +133,7 @@ export const tenantDb = {
    * UsageEvent operations with automatic tenant filtering
    */
   usageEvent: {
-    async findMany(args?: any) {
+    async findMany(args?: Prisma.UsageEventFindManyArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.usageEvent.findMany({
         ...args,
@@ -144,7 +144,7 @@ export const tenantDb = {
       });
     },
 
-    async create(args: any) {
+    async create(args: Prisma.UsageEventCreateArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.usageEvent.create({
         ...args,
@@ -155,7 +155,7 @@ export const tenantDb = {
       });
     },
 
-    async count(args?: any) {
+    async count(args?: Prisma.UsageEventCountArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.usageEvent.count({
         ...args,
@@ -171,7 +171,7 @@ export const tenantDb = {
    * SubscriptionHistory operations with automatic tenant filtering
    */
   subscriptionHistory: {
-    async findMany(args?: any) {
+    async findMany(args?: Prisma.SubscriptionHistoryFindManyArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.subscriptionHistory.findMany({
         ...args,
@@ -182,7 +182,7 @@ export const tenantDb = {
       });
     },
 
-    async create(args: any) {
+    async create(args: Prisma.SubscriptionHistoryCreateArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.subscriptionHistory.create({
         ...args,
@@ -198,7 +198,7 @@ export const tenantDb = {
    * UserSettings operations with automatic tenant filtering
    */
   userSettings: {
-    async findUnique(args: any) {
+    async findUnique(args: Prisma.UserSettingsFindUniqueArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       const result = await prisma.userSettings.findUnique(args);
 
@@ -210,7 +210,7 @@ export const tenantDb = {
       return result;
     },
 
-    async create(args: any) {
+    async create(args: Prisma.UserSettingsCreateArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
       return prisma.userSettings.create({
         ...args,
@@ -221,7 +221,7 @@ export const tenantDb = {
       });
     },
 
-    async update(args: any) {
+    async update(args: Prisma.UserSettingsUpdateArgs) {
       const tenantId = getTestTenantId() || (await getTenantId());
 
       // First verify tenant access

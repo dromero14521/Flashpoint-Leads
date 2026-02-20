@@ -85,7 +85,7 @@ export function UsageMeter({
           <div className="flex-1">
             <p className="text-red-800 font-medium">Limit reached!</p>
             <p className="text-red-700 mt-1">
-              You've used all your {label} for this month.{" "}
+              You&apos;ve used all your {label} for this month.{" "}
               <Link
                 href="/pricing"
                 className="underline font-medium hover:text-red-900"
@@ -99,7 +99,7 @@ export function UsageMeter({
 
       {isNearLimit && !isAtLimit && (
         <p className="text-xs text-orange-600">
-          You're almost at your limit.{" "}
+          You&apos;re almost at your limit.{" "}
           <Link href="/pricing" className="underline font-medium hover:text-orange-800">
             Upgrade for unlimited access
           </Link>

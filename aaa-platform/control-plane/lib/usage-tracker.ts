@@ -24,7 +24,7 @@ export async function trackUsage(
   userId: string,
   tenantId: string,
   action: UsageAction,
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 ): Promise<void> {
   const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
 
@@ -90,7 +90,7 @@ export async function getAllMonthlyUsage(
     api_call: 0,
   };
 
-  events.forEach((event: any) => {
+  events.forEach((event) => {
     usage[event.action] = event._count.action;
   });
 
@@ -249,7 +249,7 @@ export async function getUsageStats(userId?: string): Promise<{
     api_call: 0,
   };
 
-  byActionData.forEach((item: any) => {
+  byActionData.forEach((item) => {
     byAction[item.action] = item._count.action;
   });
 
@@ -261,7 +261,7 @@ export async function getUsageStats(userId?: string): Promise<{
   });
 
   const byMonth: Record<string, number> = {};
-  byMonthData.forEach((item: any) => {
+  byMonthData.forEach((item) => {
     byMonth[item.month] = item._count.month;
   });
 
@@ -305,7 +305,7 @@ export async function getUsageHistory(
   Array<{
     action: UsageAction;
     timestamp: Date;
-    metadata: any;
+    metadata: unknown;
   }>
 > {
   const events = await prisma.usageEvent.findMany({
@@ -319,7 +319,7 @@ export async function getUsageHistory(
     },
   });
 
-  return events.map((event: any) => ({
+  return events.map((event) => ({
     action: event.action as UsageAction,
     timestamp: event.createdAt,
     metadata: event.metadata ? JSON.parse(event.metadata) : null,

@@ -163,7 +163,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       data: {
         stripeSubscriptionId: subscriptionId,
         stripePriceId: priceId,
-        stripeCurrentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+        stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
         tier: tier,
       },
     });
@@ -252,7 +252,7 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
     data: {
       stripeSubscriptionId: subscription.id,
       stripePriceId: priceId,
-      stripeCurrentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+      stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
       tier: tier,
     },
   });
@@ -312,7 +312,7 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
     data: {
       stripeSubscriptionId: subscription.id,
       stripePriceId: priceId,
-      stripeCurrentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+      stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
       tier: subscription.status === "active" ? tier : "tier1",
     },
   });

@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 
       // Usage tracking is handled automatically by withUsageGate
       return NextResponse.json(blueprint, { status: 201 });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Blueprint generation error:", error);
       return NextResponse.json(
         { error: "Failed to generate blueprint" },
