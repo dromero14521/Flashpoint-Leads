@@ -1,0 +1,16 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "platform": "openclaw",
+  "brainPath": ".",
+  "ignore": [
+    "TOOLS.md",
+    ".env",
+    "*.key",
+    ".openclaw/",
+    ".pi/",
+    "node_modules/",
+    ".agents/"
+  ],
+  "created": "2026-02-28T06:44:40.156Z"
+}

@@ -1,0 +1,21 @@
+# brainpack ignore list
+TOOLS.md
+.env
+*.key
+.openclaw/
+.pi/
+node_modules/
+.agents/
+
+# common secrets
+.env*
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
+
+# npm
+package-lock.json
+node_modules/
