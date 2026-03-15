@@ -7,6 +7,8 @@ import {
   extractWebhookData,
   mapVariantIdToTier,
   isSubscriptionActive,
+  type LemonSqueezyWebhookPayload,
+  type WebhookData,
 } from "@/lib/lemonsqueezy";
 import { updateSubscriptionTier } from "@/lib/clerk";
 
@@ -33,10 +35,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
-  let payload: any;
+  let payload: LemonSqueezyWebhookPayload;
   try {
-    payload = JSON.parse(body);
-  } catch (error) {
+    payload = JSON.parse(body) as LemonSqueezyWebhookPayload;
+  } catch {
     console.error("Invalid JSON in webhook body");
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
@@ -133,7 +135,7 @@ export async function POST(request: Request) {
  * Handle order_created event
  * Triggered when a one-time payment is completed
  */
-async function handleOrderCreated(data: any) {
+async function handleOrderCreated(data: WebhookData) {
   console.log("Processing order_created:", {
     orderId: data.id,
     customerId: data.customerId,
@@ -188,7 +190,7 @@ async function handleOrderCreated(data: any) {
  * Handle subscription_created event
  * Triggered when a new subscription is started
  */
-async function handleSubscriptionCreated(data: any) {
+async function handleSubscriptionCreated(data: WebhookData) {
   console.log("Processing subscription_created:", {
     subscriptionId: data.subscriptionId,
     customerId: data.customerId,
@@ -244,7 +246,7 @@ async function handleSubscriptionCreated(data: any) {
  * Handle subscription_updated event
  * Triggered when subscription details change (plan change, pause, etc)
  */
-async function handleSubscriptionUpdated(data: any) {
+async function handleSubscriptionUpdated(data: WebhookData) {
   console.log("Processing subscription_updated:", {
     subscriptionId: data.subscriptionId,
     customerId: data.customerId,
@@ -305,7 +307,7 @@ async function handleSubscriptionUpdated(data: any) {
  * Handle subscription_cancelled event
  * Triggered when subscription is cancelled
  */
-async function handleSubscriptionCancelled(data: any) {
+async function handleSubscriptionCancelled(data: WebhookData) {
   console.log("Processing subscription_cancelled:", {
     subscriptionId: data.subscriptionId,
     customerId: data.customerId,
@@ -359,7 +361,7 @@ async function handleSubscriptionCancelled(data: any) {
  * Handle subscription_payment_success event
  * Triggered when a recurring payment succeeds
  */
-async function handlePaymentSuccess(data: any) {
+async function handlePaymentSuccess(data: WebhookData) {
   console.log("Payment succeeded for subscription:", data.subscriptionId);
 
   // Could send "Payment successful" email here

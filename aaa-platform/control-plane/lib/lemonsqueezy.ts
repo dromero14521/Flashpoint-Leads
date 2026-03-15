@@ -102,6 +102,32 @@ export function verifyWebhookSignature(
 }
 
 /**
+ * Raw LemonSqueezy webhook payload shape (JSON:API format)
+ */
+export interface LemonSqueezyWebhookPayload {
+  meta?: {
+    event_name?: string;
+    custom_data?: Record<string, unknown>;
+  };
+  data: {
+    id: string;
+    type: string;
+    attributes?: {
+      customer_id?: string;
+      subscription_id?: string;
+      order_id?: string;
+      status?: string;
+      variant_id?: string;
+      product_id?: string;
+      customer_email?: string;
+      customer_name?: string;
+      total?: number;
+      url?: string;
+    };
+  };
+}
+
+/**
  * Extract data from LemonSqueezy webhook payload
  * Webhooks are in JSON:API format
  */
@@ -119,7 +145,7 @@ export interface WebhookData {
   amount?: number;
 }
 
-export function extractWebhookData(payload: any): WebhookData {
+export function extractWebhookData(payload: LemonSqueezyWebhookPayload): WebhookData {
   const data = payload.data;
 
   return {
